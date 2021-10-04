@@ -12,34 +12,34 @@ public class TestBoardCell
 	
 	private Set<TestBoardCell> adjList;
 	
-	TestBoardCell(int row, int column)
+	public TestBoardCell(int row, int column)
 	{
 		this.row = row;
 		this.column = column;
 	}
 	
-	void addAdjacency(TestBoardCell cell)
+	public void addAdjacency(TestBoardCell cell)
 	{
 		adjList.add(cell);
 	}
-	Set<TestBoardCell> getAdjList()
+	public Set<TestBoardCell> getAdjList()
 	{
 		return adjList;
 	}
-	void setRoom(boolean room)
+	public void setRoom(boolean room)
 	{
 		this.room = room;
 	}
-	boolean isRoom()
+	public boolean isRoom()
 	{
 		return room;
 	}
 	
-	void setOccupied(boolean occupied)
+	public void setOccupied(boolean occupied)
 	{
 		this.occupied = occupied;
 	}
-	boolean getOccupied()
+	public boolean getOccupied()
 	{
 		return occupied;
 	}
