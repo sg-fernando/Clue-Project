@@ -8,7 +8,7 @@ public class TestBoard
 	{
 		
 	}
-	void calcTargets(TestBoardCell startCell, int pathlength)
+	public void calcTargets(TestBoardCell startCell, int pathlength)
 	{
 		
 	}
