@@ -52,6 +52,15 @@ public class BoardTestsExp
 		Assert.assertTrue(testList.contains(board.getCell(2, 3))); //down
 		Assert.assertTrue(testList.contains(board.getCell(1, 2))); //left
 		Assert.assertEquals(3,testList.size());
+		
+		//middle of grid
+		cell = board.getCell(2, 2);
+		testList = cell.getAdjList();
+		Assert.assertTrue(testList.contains(board.getCell(1, 2))); //up
+		Assert.assertTrue(testList.contains(board.getCell(3, 2))); //down
+		Assert.assertTrue(testList.contains(board.getCell(2, 1))); //left
+		Assert.assertTrue(testList.contains(board.getCell(2, 3))); //right
+		Assert.assertEquals(4,testList.size());
 	}
 	
 	@Test
