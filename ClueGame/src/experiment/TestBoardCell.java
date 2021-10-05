@@ -5,20 +5,19 @@ import java.util.Set;
 
 public class TestBoardCell
 {
-	private int row;
-	private int column;
+	private int row, col;
 	
-	private boolean room;
-	private boolean occupied;
+	private Boolean isRoom, isOccupied ;
+
 	
 	private Set<TestBoardCell> adjList = new HashSet<TestBoardCell>();
 	
-	public TestBoardCell(int row, int column)
+	public TestBoardCell(int row, int col)
 	{
 		this.row = row;
-		this.column = column;
-		this.room = false;
-		this.occupied = false;
+		this.col = col;
+		this.isRoom = false;
+		this.isOccupied = false;
 	}
 	
 	public void addAdjacency(TestBoardCell cell)
@@ -29,21 +28,21 @@ public class TestBoardCell
 	{
 		return adjList;
 	}
-	public void setIsRoom(boolean room)
+	public void setIsRoom(boolean isRoom)
 	{
-		this.room = room;
+		this.isRoom = isRoom;
 	}
-	public boolean isRoom()
+	public Boolean isRoom()
 	{
-		return room;
+		return isRoom;
 	}
 	
-	public void setOccupied(boolean occupied)
+	public void setOccupied(boolean isOccupied)
 	{
-		this.occupied = occupied;
+		this.isOccupied = isOccupied;
 	}
-	public boolean getOccupied()
+	public Boolean getOccupied()
 	{
-		return occupied;
+		return isOccupied;
 	}
 }

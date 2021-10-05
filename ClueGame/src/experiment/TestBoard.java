@@ -5,11 +5,60 @@ import java.util.Set;
 
 public class TestBoard
 {
+	private TestBoardCell[][] grid;
 	private Set<TestBoardCell> targets = new HashSet<TestBoardCell>();
+	private Set<TestBoardCell> visited;
+	
+	final static int COLS = 4;
+	final static int ROWS = 4;
+	
 	public TestBoard()
 	{
-		
+		//create board
+		buildBoard();
+		//create all adjacency lists
+		buildAdjLists();
 	}
+	
+	private void buildBoard()
+	{
+		grid = new TestBoardCell[ROWS][COLS];
+		for (int row = 0; row < ROWS; row++)
+		{
+			for (int col = 0; col < COLS; col++)
+			{
+				grid[row][col] = new TestBoardCell(row, col);
+			}
+		}
+	}
+	
+	private void buildAdjLists()
+	{
+		for (int row = 0; row < ROWS; row++)
+		{
+			for (int col = 0; col < COLS; col++)
+			{
+				if (row != 0)
+				{
+					grid[row][col].addAdjacency(grid[row-1][col]);
+				}
+				if (row != ROWS-1)
+				{
+					grid[row][col].addAdjacency(grid[row+1][col]);
+				}
+				if (col != 0)
+				{
+					grid[row][col].addAdjacency(grid[row][col-1]);
+				}
+				if (col != COLS-1)
+				{
+					grid[row][col].addAdjacency(grid[row][col+1]);
+				}
+
+			}
+		}
+	}
+	
 	public void calcTargets(TestBoardCell startCell, int pathlength)
 	{
 		
@@ -20,7 +69,7 @@ public class TestBoard
 	}
 	public TestBoardCell getCell(int row, int col)
 	{
-		return new TestBoardCell(row,col);
+		return grid[row][col];
 	}
 }
 
