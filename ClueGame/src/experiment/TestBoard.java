@@ -2,11 +2,12 @@ package experiment;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class TestBoard
 {
 	private TestBoardCell[][] grid;
-	private Set<TestBoardCell> targets = new HashSet<TestBoardCell>();
+	private Set<TestBoardCell> targets;
 	private Set<TestBoardCell> visited;
 	
 	final static int COLS = 4;
@@ -61,8 +62,36 @@ public class TestBoard
 	
 	public void calcTargets(TestBoardCell startCell, int pathlength)
 	{
+		visited = new HashSet<TestBoardCell>();
+		targets = new HashSet<TestBoardCell>();
+		visited.add(startCell);
 		
+		findAllTargets(startCell, pathlength);
 	}
+	
+	private void findAllTargets(TestBoardCell thisCell, int numSteps)
+	{
+		for (TestBoardCell adjCell : thisCell.getAdjList())
+		{
+			if (visited.contains(adjCell))
+			{
+				continue;
+			}
+			
+			visited.add(adjCell);
+			
+			if (numSteps == 1)
+			{
+				targets.add(adjCell);
+			}
+			else
+			{
+				findAllTargets(adjCell, numSteps-1);
+			}
+			visited.remove(adjCell);
+		}
+	}
+	
 	public Set<TestBoardCell> getTargets()
 	{
 		return targets;

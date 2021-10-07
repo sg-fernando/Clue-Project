@@ -83,8 +83,7 @@ public class BoardTestsExp
 		cell = board.getCell(0, 0);
 		board.calcTargets(cell, 4);
 		targets = board.getTargets();
-		Assert.assertEquals(7, targets.size());
-		Assert.assertTrue(targets.contains(board.getCell(0, 0)));
+		Assert.assertEquals(6, targets.size());
 		Assert.assertTrue(targets.contains(board.getCell(2, 0)));
 		Assert.assertTrue(targets.contains(board.getCell(1, 1)));
 		Assert.assertTrue(targets.contains(board.getCell(0, 2)));
@@ -95,9 +94,8 @@ public class BoardTestsExp
 		cell = board.getCell(0, 0);
 		board.calcTargets(cell, 6);
 		targets = board.getTargets();
-		Assert.assertEquals(8, targets.size());
-		Assert.assertTrue(targets.contains(board.getCell(0, 0)));
-		Assert.assertTrue(targets.contains(board.getCell(2, 1)));
+		Assert.assertEquals(7, targets.size());
+		Assert.assertTrue(targets.contains(board.getCell(2, 0)));
 		Assert.assertTrue(targets.contains(board.getCell(1, 1)));
 		Assert.assertTrue(targets.contains(board.getCell(0, 2)));
 		Assert.assertTrue(targets.contains(board.getCell(3, 1)));
