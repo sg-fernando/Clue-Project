@@ -1,8 +1,10 @@
 package clueGame;
 
-public class BadConfigFormatException extends Exception {
+public class BadConfigFormatException extends Exception
+{
 
-	public BadConfigFormatException() {
+	public BadConfigFormatException()
+	{
 		super("Error: bad file config");
 	}
 

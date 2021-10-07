@@ -3,9 +3,8 @@ package clueGame;
 import java.util.HashSet;
 import java.util.Set;
 
-import experiment.TestBoardCell;
-
-public class Board {
+public class Board
+{
 
 	private BoardCell[][] grid;
 	private Set<BoardCell> targets;
@@ -110,21 +109,21 @@ public class Board {
 	{
 		return grid[row][col];
 	}
-	public void setConfigFiles(String csv, String text) {
-		// TODO Auto-generated method stub
+	public void setConfigFiles(String csv, String text)
+	{
 		
 	}
-	public void loadSetupConfig() {
-		// TODO Auto-generated method stub
+	public void loadSetupConfig()
+	{
 		
 	}
-	public void loadLayoutConfig() {
-		// TODO Auto-generated method stub
+	public void loadLayoutConfig()
+	{
 		
 	}
-	public Object getRoom(char c) {
-		// TODO Auto-generated method stub
-		return null;
+	public Room getRoom(char c)
+	{
+		return new Room(null, null, null);
 	}
 	
 
