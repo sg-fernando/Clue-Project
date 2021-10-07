@@ -7,12 +7,14 @@ import java.util.Set;
 public class BoardCell
 {
 
-private int row, col;
+	private int row, col;
 	
-	private Boolean isRoom, isOccupied ;
+	private Boolean isRoom, isOccupied, isRoomCenter, isLabel, isDoorway;
 
 	
 	private Set<BoardCell> adjList = new HashSet<BoardCell>();
+
+	private char secretPassage;
 	
 	public BoardCell(int row, int col)
 	{
@@ -36,7 +38,7 @@ private int row, col;
 	}
 	public Boolean isRoom()
 	{
-		return isRoom;
+		return this.isRoom;
 	}
 	
 	public void setOccupied(boolean isOccupied)
@@ -45,7 +47,30 @@ private int row, col;
 	}
 	public Boolean getOccupied()
 	{
-		return isOccupied;
+		return this.isOccupied;
 	}
 
+	public Boolean isRoomCenter()
+	{
+		return this.isRoomCenter;
+	}
+
+	public Boolean isLabel()
+	{
+		return this.isLabel;
+	}
+
+	public Boolean isDoorway()
+	{
+		return this.isDoorway;
+	}
+
+	public char getSecretPassage() {
+		return this.secretPassage ;
+	}
+
+	public Object getDoorDirection()
+	{
+		return null;
+	}
 }

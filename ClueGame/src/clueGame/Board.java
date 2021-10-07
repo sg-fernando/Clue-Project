@@ -1,6 +1,9 @@
 package clueGame;
 
+
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class Board
@@ -10,8 +13,12 @@ public class Board
 	private Set<BoardCell> targets;
 	private Set<BoardCell> visited;
 	
-	final static int COLS = 4;
-	final static int ROWS = 4;
+	private int numRows;
+	private int numColumns;
+	
+	private String layoutConfigFile;
+	private String setupConfigFile;
+	Map<Character, Room> roomMap;
 	
 	private static Board theInstance = new Board();
 	private Board()
@@ -32,10 +39,10 @@ public class Board
     }
 	private void buildBoard()
 	{
-		grid = new BoardCell[ROWS][COLS];
-		for (int row = 0; row < ROWS; row++)
+		grid = new BoardCell[numRows][numColumns];
+		for (int row = 0; row < numRows; row++)
 		{
-			for (int col = 0; col < COLS; col++)
+			for (int col = 0; col < numColumns; col++)
 			{
 				grid[row][col] = new BoardCell(row, col);
 			}
@@ -44,15 +51,15 @@ public class Board
 	
 	private void buildAdjLists()
 	{
-		for (int row = 0; row < ROWS; row++)
+		for (int row = 0; row < numRows; row++)
 		{
-			for (int col = 0; col < COLS; col++)
+			for (int col = 0; col < numColumns; col++)
 			{
 				if (row != 0)
 				{
 					grid[row][col].addAdjacency(grid[row-1][col]);
 				}
-				if (row != ROWS-1)
+				if (row != numRows-1)
 				{
 					grid[row][col].addAdjacency(grid[row+1][col]);
 				}
@@ -60,7 +67,7 @@ public class Board
 				{
 					grid[row][col].addAdjacency(grid[row][col-1]);
 				}
-				if (col != COLS-1)
+				if (col != numColumns-1)
 				{
 					grid[row][col].addAdjacency(grid[row][col+1]);
 				}
@@ -109,21 +116,35 @@ public class Board
 	{
 		return grid[row][col];
 	}
-	public void setConfigFiles(String csv, String text)
+	public void setConfigFiles(String layoutConfigFile, String setupConfigFile)
+	{
+		this.layoutConfigFile = layoutConfigFile;
+		this.setupConfigFile = setupConfigFile;
+	}
+	public void loadSetupConfig() throws BadConfigFormatException
 	{
 		
 	}
-	public void loadSetupConfig()
+	public void loadLayoutConfig() throws BadConfigFormatException
 	{
 		
-	}
-	public void loadLayoutConfig()
-	{
 		
 	}
 	public Room getRoom(char c)
 	{
 		return new Room(null, null, null);
+	}
+	public Room getRoom(BoardCell cell)
+	{
+		return new Room(null, null, null);
+	}
+	public int getNumRows()
+	{
+		return this.numRows;
+	}
+	public int getNumColumns()
+	{
+		return this.numColumns;
 	}
 	
 
