@@ -73,14 +73,14 @@ public class TestBoard
 	{
 		for (TestBoardCell adjCell : thisCell.getAdjList())
 		{
-			if (visited.contains(adjCell))
+			if (visited.contains(adjCell) || adjCell.getOccupied())
 			{
 				continue;
 			}
 			
 			visited.add(adjCell);
 			
-			if (numSteps == 1)
+			if (adjCell.isRoom() || (numSteps == 1 && !adjCell.getOccupied()))
 			{
 				targets.add(adjCell);
 			}
