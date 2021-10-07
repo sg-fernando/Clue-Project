@@ -1,0 +1,7 @@
+changed LEGEND_SIZE, NUM_ROWS, and NUM_COLUMNS to correspond with our own layout file
+for setup changed the filenames to our filenames
+for testRoomLabels used our setup file and changed the data + added more rooms
+didn't need to change testBoardDimensions
+for FourDoorDirections we found doors facing different directions in our csv file and changed the board.getCell position to the corresponding positions in our file
+for testNumberOfDoorways we counted how many doors we had and changed the number in assertEquals
+for testRooms we found cells in our csv file that corresponded to the tests and changed the position of board.getCell, and changed the name/secretpassage to fit with our file
