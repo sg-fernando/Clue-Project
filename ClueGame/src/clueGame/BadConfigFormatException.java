@@ -12,5 +12,10 @@ public class BadConfigFormatException extends Exception
 	{
 		super("Error: bad file config");
 	}
+	public BadConfigFormatException(String message)
+	{
+		super(message);
+	}
+
 
 }

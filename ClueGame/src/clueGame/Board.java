@@ -52,8 +52,7 @@ public class Board
 //		{
 //			for (int col = 0; col < numColumns; col++)
 //			{
-//				System.out.print(grid[row][col].getInitial());
-//				System.out.print(" ");
+//				System.out.print(grid[row][col]);
 //			}
 //			System.out.println();
 //		}
@@ -84,10 +83,12 @@ public class Board
 					if (d == '*')
 					{
 						r.setCenterCell(b);
+						b.setIsRoomCenter(true);
 					}
 					else if (d == '#')
 					{
 						r.setLabelCell(b);
+						b.setIsLabel(true);
 					}
 					else if (d == '<')
 					{
@@ -204,7 +205,7 @@ public class Board
 				{
 					String[] row = line.split(", ");
 					
-					if (row[0].equals("Room"))
+					//if (row[0].equals("Room"))
 					{
 						Room room = new Room(row[1]);
 						roomMap.put(row[2].charAt(0), room);
@@ -215,10 +216,10 @@ public class Board
 			
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			
-//			for (Map.Entry<Character, Room> entry : roomMap.entrySet())
-//			{
-//			    System.out.println(entry.getKey() + ":" + entry.getValue().getName());
-//			}
+			for (Map.Entry<Character, Room> entry : roomMap.entrySet())
+			{
+			    System.out.println(entry.getKey() + ":" + entry.getValue().getName());
+			}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			

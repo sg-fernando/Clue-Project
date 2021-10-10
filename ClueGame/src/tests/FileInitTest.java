@@ -27,7 +27,7 @@ public class FileInitTest {
 		// Board is singleton, get the only instance
 		board = Board.getInstance();
 		// set the file names to use my config files
-		board.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");
+		board.setConfigFiles("data/ClueLayout.csv", "data/ClueSetup.txt");
 		// Initialize will load BOTH config files
 		board.initialize();
 	}
@@ -45,8 +45,6 @@ public class FileInitTest {
 		assertEquals("Kitchen", board.getRoom('K').getName() );
 		assertEquals("Blanche's Room", board.getRoom('B').getName() );
 		assertEquals("Front Yard", board.getRoom('Y').getName() );
-		assertEquals("Unused", board.getRoom('X').getName() );
-		assertEquals("Walkway", board.getRoom('Z').getName() );
 	}
 
 	@Test
@@ -61,7 +59,7 @@ public class FileInitTest {
 	// These cells are white on the planning spreadsheet
 	@Test
 	public void FourDoorDirections() {
-		BoardCell cell = board.getCell(13, 5);
+		BoardCell cell = board.getCell(15, 5);
 		assertTrue(cell.isDoorway());
 		assertEquals(DoorDirection.LEFT, cell.getDoorDirection());
 		cell = board.getCell(6, 7);
