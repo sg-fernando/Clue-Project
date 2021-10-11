@@ -12,24 +12,15 @@ public class Room
 		this.name = name;
 	}
 	
-	public String getName()
-	{
-		return this.name;
-	}
+	public String getName() { return this.name; }
 
-	public BoardCell getLabelCell()
-	{
-		return this.labelCell;
-	}
+	public BoardCell getLabelCell() { return this.labelCell; }
 	public void setLabelCell(BoardCell labelCell)
 	{
 		this.labelCell = labelCell;
 	}
 
-	public BoardCell getCenterCell()
-	{
-		return this.centerCell;
-	}
+	public BoardCell getCenterCell() { return this.centerCell; }
 	public void setCenterCell(BoardCell centerCell)
 	{
 		this.centerCell = centerCell;

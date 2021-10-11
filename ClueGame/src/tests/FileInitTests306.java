@@ -9,16 +9,15 @@ package tests;
 import static org.junit.Assert.*;
 
 import org.junit.Assert;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
+import org.junit.Before;
+import org.junit.Test;
 import clueGame.Board;
 import clueGame.BoardCell;
 import clueGame.DoorDirection;
 import clueGame.Room;
 
 public class FileInitTests306 {
-	// Constants that I will use to test whether the file was loaded correctly
+	// Constants that I will usse to test whether the file was loaded correctly
 	public static final int LEGEND_SIZE = 11;
 	public static final int NUM_ROWS = 25;
 	public static final int NUM_COLUMNS = 24;
@@ -27,15 +26,15 @@ public class FileInitTests306 {
 	// time (using @BeforeAll), no need to do setup before each test.
 	private static Board board;
 
-	@BeforeAll
-	public static void setUp() {
+	@Before
+	public void setUp() {
 		// Board is singleton, get the only instance
 		board = Board.getInstance();
 		// set the file names to use my config files
-		board.setConfigFiles("ClueLayout306.csv", "ClueSetup306.txt");
+		board.setConfigFiles("data/ClueLayout306.csv", "data/ClueSetup306.txt");
 		// Initialize will load BOTH config files
 		board.initialize();
-	}
+	} 
 
 	@Test
 	public void testRoomLabels() {

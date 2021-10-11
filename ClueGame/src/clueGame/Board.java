@@ -2,7 +2,6 @@ package clueGame;
 
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,17 +14,15 @@ public class Board
 {
 
 	private BoardCell[][] grid;
-	private Set<BoardCell> targets;
-	private Set<BoardCell> visited;
+	private Set<BoardCell> targets, visited;
 	
-	private int numRows;
-	private int numColumns;
+	private int numRows, numColumns;
 	
-	private String layoutConfigFile;
-	private String setupConfigFile;
-	Map<Character, Room> roomMap = new HashMap<Character, Room>();
+	private String layoutConfigFile, setupConfigFile;
+	Map<Character, Room> roomMap;
 	
 	private static Board theInstance = new Board();
+	
 	private Board()
 	{	
 		super();
@@ -34,32 +31,23 @@ public class Board
     {
 		return theInstance;
     }
-	public void initialize()// throws BadConfigFormatException
+	
+	public void initialize()
 	{
-		ArrayList<String[]> l = new ArrayList<String[]>();
+		ArrayList<String[]> arrList = new ArrayList<String[]>();
 		try
 		{
 			loadSetupConfig();
-			l = loadLayoutConfig();
-		} catch (BadConfigFormatException e)
+			arrList = loadLayoutConfig();
+		} 
+		catch (BadConfigFormatException e)
 		{
 			e.printStackTrace();
 		}
-    	buildBoard(l);
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    	
-//    	for (int row = 0; row < numRows; row++)
-//		{
-//			for (int col = 0; col < numColumns; col++)
-//			{
-//				System.out.print(grid[row][col]);
-//			}
-//			System.out.println();
-//		}
-    	
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    	buildBoard(arrList);
     	buildAdjLists();
 	}
+	
 	private void buildBoard(ArrayList<String[]> arrList)
 	{
 		grid = new BoardCell[numRows][numColumns];
@@ -67,56 +55,49 @@ public class Board
 		{
 			for (int col = 0; col < numColumns; col++)
 			{
+				BoardCell boardCell = new BoardCell(row, col, arrList.get(row)[col].charAt(0));
 				
-				char c = arrList.get(row)[col].charAt(0);
-				BoardCell b = new BoardCell(row, col, c);
-				
-				if (roomMap.containsKey(c))
+				if (roomMap.containsKey(boardCell.getInitial()))
 				{
-					b.setIsRoom(true);
+					boardCell.setIsRoom(true);
 				}
 				 
 				if (arrList.get(row)[col].length() > 1)
 				{
-					char d = arrList.get(row)[col].charAt(1);
-					Room r = getRoom(c);
-					if (d == '*')
+					char secondChar = arrList.get(row)[col].charAt(1);
+					Room room = getRoom(boardCell.getInitial());
+					switch (secondChar)
 					{
-						r.setCenterCell(b);
-						b.setIsRoomCenter(true);
+					case '*':
+						room.setCenterCell(boardCell);
+						boardCell.setIsRoomCenter(true);
+						break;
+					case '#':
+						room.setLabelCell(boardCell);
+						boardCell.setIsLabel(true);
+						break;
+					case '<':
+						boardCell.setIsDoorway(true);
+						boardCell.setDoorDirection(DoorDirection.LEFT);
+						break;
+					case '>':
+						boardCell.setIsDoorway(true);
+						boardCell.setDoorDirection(DoorDirection.RIGHT);
+						break;
+					case '^':
+						boardCell.setIsDoorway(true);
+						boardCell.setDoorDirection(DoorDirection.UP);
+						break;
+					case 'v':
+						boardCell.setIsDoorway(true);
+						boardCell.setDoorDirection(DoorDirection.DOWN);
+						break;
+					default:
+						boardCell.setSecretPassage(secondChar);
+						break;
 					}
-					else if (d == '#')
-					{
-						r.setLabelCell(b);
-						b.setIsLabel(true);
-					}
-					else if (d == '<')
-					{
-						b.setIsDoorway(true);
-						b.setDoorDirection(DoorDirection.LEFT);
-					}
-					else if (d == '>')
-					{
-						 b.setIsDoorway(true);
-						 b.setDoorDirection(DoorDirection.RIGHT);
-					}
-					else if (d == '^')
-					{
-						b.setIsDoorway(true);
-						b.setDoorDirection(DoorDirection.UP);
-					}
-					else if (d == 'v')
-					{
-						b.setIsDoorway(true);
-						b.setDoorDirection(DoorDirection.DOWN);
-					}
-					else
-					{
-						b.setSecretPassage(d);
-					}
-				}
-								 
-				 grid[row][col] = b;
+				}		 
+				grid[row][col] = boardCell;
 			}
 		}
 	}
@@ -143,7 +124,6 @@ public class Board
 				{
 					grid[row][col].addAdjacency(grid[row][col+1]);
 				}
-
 			}
 		}
 	}
@@ -180,79 +160,60 @@ public class Board
 		}
 	}
 	
-	public Set<BoardCell> getTargets()
-	{
-		return targets;
-	}
-	public BoardCell getCell(int row, int col)
-	{
-		return grid[row][col];
-	}
 	public void setConfigFiles(String layoutConfigFile, String setupConfigFile)
 	{
 		this.layoutConfigFile = layoutConfigFile;
 		this.setupConfigFile = setupConfigFile;
 	}
+	
 	public void loadSetupConfig() throws BadConfigFormatException
 	{
+		roomMap = new HashMap<Character, Room>();
 		try
 		{
-			BufferedReader br = new BufferedReader(new FileReader(this.setupConfigFile));
+			BufferedReader reader = new BufferedReader(new FileReader(this.setupConfigFile));
 			String line;
-			while ((line = br.readLine()) != null)
+			while ((line = reader.readLine()) != null)
 			{
 				if (line.charAt(0) != '/')
 				{
 					String[] row = line.split(", ");
-					
-					//if (row[0].equals("Room"))
-					{
-						Room room = new Room(row[1]);
-						roomMap.put(row[2].charAt(0), room);
-					}
+					Room room = new Room(row[1]);
+					roomMap.put(row[2].charAt(0), room);
 				}
 			}
-			br.close();
-			
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			
-			for (Map.Entry<Character, Room> entry : roomMap.entrySet())
-			{
-			    System.out.println(entry.getKey() + ":" + entry.getValue().getName());
-			}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			
-			
+			reader.close();
 		}
 		catch (IOException e)
 		{
 			throw new BadConfigFormatException();
 		}
 	}
+	
 	public ArrayList<String[]> loadLayoutConfig() throws BadConfigFormatException
 	{
-		ArrayList<String[]> l = new ArrayList<String[]>();
+		ArrayList<String[]> arrList = new ArrayList<String[]>();
 		try
 		{
-			BufferedReader br = new BufferedReader(new FileReader(this.layoutConfigFile));
+			BufferedReader reader = new BufferedReader(new FileReader(this.layoutConfigFile));
 			String line;
-			while ((line = br.readLine()) != null)
+			while ((line = reader.readLine()) != null)
 			{
 				String[] row = line.split(",");
-				l.add(row);
+				arrList.add(row);
 			}
-			br.close();
+			reader.close();
 			
-			this.numRows = l.size();
-			this.numColumns = l.get(0).length;
+			this.numRows = arrList.size();
+			this.numColumns = arrList.get(0).length;
 		}
 		catch (IOException e)
 		{
 			throw new BadConfigFormatException();
 		}
-		return l;
+		return arrList;
 	}
+	
 	public Room getRoom(char c)
 	{
 		return roomMap.get(c);
@@ -262,23 +223,12 @@ public class Board
 		char c = cell.getInitial();
 		return getRoom(c);
 	}
-	public int getNumRows()
-	{
-		return this.numRows;
-	}
-	public int getNumColumns()
-	{
-		return this.numColumns;
-	}
 	
-	public static void main(String[] args)
-	{
-		Board board = Board.getInstance();
-		// set the file names to use my config files
-		board.setConfigFiles("data/ClueLayout.csv", "data/ClueSetup.txt");
-		// Initialize will load BOTH config files
-		board.initialize();
-
-	}
-
+	public Set<BoardCell> getTargets() { return targets; }
+	
+	public int getNumRows() { return this.numRows; }
+	
+	public int getNumColumns() { return this.numColumns; }
+	
+	public BoardCell getCell(int row, int col) { return grid[row][col]; }
 }
