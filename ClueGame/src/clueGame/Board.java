@@ -180,14 +180,14 @@ public class Board
 	{
 		for (BoardCell adjCell : thisCell.getAdjList())
 		{
-			if (visited.contains(adjCell) || adjCell.isOccupied())
+			if ( visited.contains(adjCell) || (adjCell.isOccupied() && !adjCell.isRoomCenter()) )
 			{
 				continue;
 			}
 			
 			visited.add(adjCell);
 			
-			if (numSteps == 1 && !adjCell.isOccupied())
+			if ( (numSteps == 1 && !adjCell.isOccupied()) || adjCell.isRoomCenter() )
 			{
 				targets.add(adjCell);
 			}
