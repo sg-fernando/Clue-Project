@@ -56,12 +56,7 @@ public class Board
 			for (int col = 0; col < numColumns; col++)
 			{
 				BoardCell boardCell = new BoardCell(row, col, arrList.get(row)[col].charAt(0));
-				
-				if (roomMap.containsKey(boardCell.getInitial()))
-				{
-					boardCell.setIsRoom(true);
-				}
-				 
+
 				if (arrList.get(row)[col].length() > 1)
 				{
 					char secondChar = arrList.get(row)[col].charAt(1);
@@ -70,26 +65,26 @@ public class Board
 					{
 					case '*':
 						room.setCenterCell(boardCell);
-						boardCell.setIsRoomCenter(true);
+						boardCell.setRoomCenter(true);
 						break;
 					case '#':
 						room.setLabelCell(boardCell);
-						boardCell.setIsLabel(true);
+						boardCell.setLabel(true);
 						break;
 					case '<':
-						boardCell.setIsDoorway(true);
+						boardCell.setDoorway(true);
 						boardCell.setDoorDirection(DoorDirection.LEFT);
 						break;
 					case '>':
-						boardCell.setIsDoorway(true);
+						boardCell.setDoorway(true);
 						boardCell.setDoorDirection(DoorDirection.RIGHT);
 						break;
 					case '^':
-						boardCell.setIsDoorway(true);
+						boardCell.setDoorway(true);
 						boardCell.setDoorDirection(DoorDirection.UP);
 						break;
 					case 'v':
-						boardCell.setIsDoorway(true);
+						boardCell.setDoorway(true);
 						boardCell.setDoorDirection(DoorDirection.DOWN);
 						break;
 					default:
@@ -108,21 +103,65 @@ public class Board
 		{
 			for (int col = 0; col < numColumns; col++)
 			{
-				if (row != 0)
+				BoardCell currentCell = getCell(row,col);
+				BoardCell centerCell;
+				
+				
+				if (currentCell.isSecretPassage())
 				{
-					grid[row][col].addAdjacency(grid[row-1][col]);
+					centerCell = getRoom(currentCell).getCenterCell();
+					BoardCell secretPassage = getRoom(currentCell.getSecretPassage()).getCenterCell();
+					centerCell.addAdjacency(secretPassage);
+					
 				}
-				if (row != numRows-1)
+				
+				if (getRoom(currentCell).getName().equals("Walkway"))
 				{
-					grid[row][col].addAdjacency(grid[row+1][col]);
-				}
-				if (col != 0)
-				{
-					grid[row][col].addAdjacency(grid[row][col-1]);
-				}
-				if (col != numColumns-1)
-				{
-					grid[row][col].addAdjacency(grid[row][col+1]);
+					if (row != 0 && getRoom(getCell(row-1,col)).getName().equals("Walkway"))
+					{
+						currentCell.addAdjacency(getCell(row-1,col));
+					}
+					if (row != numRows-1 && getRoom(getCell(row+1,col)).getName().equals("Walkway"))
+					{
+						currentCell.addAdjacency(getCell(row+1,col));
+					}
+					if (col != 0 && getRoom(getCell(row,col-1)).getName().equals("Walkway"))
+					{
+						currentCell.addAdjacency(getCell(row,col-1));
+					}
+					if (col != numColumns-1 && getRoom(getCell(row,col+1)).getName().equals("Walkway"))
+					{
+						currentCell.addAdjacency(getCell(row,col+1));
+					}
+					
+					if (currentCell.isDoorway())
+					{
+						switch (getCell(row,col).getDoorDirection())
+						{
+						case UP:
+							centerCell = getRoom(getCell(row-1,col)).getCenterCell();
+							currentCell.addAdjacency(centerCell);
+							centerCell.addAdjacency(currentCell);
+							break;
+						case DOWN:
+							centerCell = getRoom(getCell(row+1,col)).getCenterCell();
+							currentCell.addAdjacency(centerCell);
+							centerCell.addAdjacency(currentCell);
+							break;
+						case RIGHT:
+							centerCell = getRoom(getCell(row,col+1)).getCenterCell();
+							currentCell.addAdjacency(centerCell);
+							centerCell.addAdjacency(currentCell);
+							break;
+						case LEFT:
+							centerCell = getRoom(getCell(row,col-1)).getCenterCell();
+							currentCell.addAdjacency(centerCell);
+							centerCell.addAdjacency(currentCell);
+							break;
+						default:
+							break;
+						}
+					}
 				}
 			}
 		}
@@ -148,7 +187,7 @@ public class Board
 			
 			visited.add(adjCell);
 			
-			if (adjCell.isRoom() || (numSteps == 1 && !adjCell.isOccupied()))
+			if (numSteps == 1 && !adjCell.isOccupied())
 			{
 				targets.add(adjCell);
 			}
@@ -231,4 +270,6 @@ public class Board
 	public int getNumColumns() { return this.numColumns; }
 	
 	public BoardCell getCell(int row, int col) { return grid[row][col]; }
+	
+	public Set<BoardCell> getAdjList(int row, int col) { return getCell(row,col).getAdjList(); }
 }
