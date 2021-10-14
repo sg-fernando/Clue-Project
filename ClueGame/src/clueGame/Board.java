@@ -12,7 +12,6 @@ import java.util.Set;
 
 public class Board
 {
-
 	private BoardCell[][] grid;
 	private Set<BoardCell> targets, visited;
 	
@@ -21,6 +20,8 @@ public class Board
 	private String layoutConfigFile, setupConfigFile;
 	Map<Character, Room> roomMap;
 	
+	
+	//singleton design pattern
 	private static Board theInstance = new Board();
 	
 	private Board()
@@ -34,9 +35,12 @@ public class Board
 	
 	public void initialize()
 	{
+		//initialize a board
 		ArrayList<String[]> arrList = new ArrayList<String[]>();
 		try
 		{
+			//load setup and config files
+			//make roomMap and load board data into arrList
 			loadSetupConfig();
 			arrList = loadLayoutConfig();
 		} 
@@ -44,23 +48,29 @@ public class Board
 		{
 			e.printStackTrace();
 		}
+		//build board using board data from arrList
     	buildBoard(arrList);
+    	//build adjacency list for all cells
     	buildAdjLists();
 	}
 	
 	private void buildBoard(ArrayList<String[]> arrList)
 	{
+		//initialize new grid
 		grid = new BoardCell[numRows][numColumns];
 		for (int row = 0; row < numRows; row++)
 		{
 			for (int col = 0; col < numColumns; col++)
 			{
+				//make board cell from data
 				BoardCell boardCell = new BoardCell(row, col, arrList.get(row)[col].charAt(0));
-
+				
+				//if the cell value is 2 char long then its a room center, label, or a door
 				if (arrList.get(row)[col].length() > 1)
 				{
 					char secondChar = arrList.get(row)[col].charAt(1);
 					Room room = getRoom(boardCell.getInitial());
+					//check whether room center, label, or door (+ direction)
 					switch (secondChar)
 					{
 					case '*':
@@ -91,7 +101,8 @@ public class Board
 						boardCell.setSecretPassage(secondChar);
 						break;
 					}
-				}		 
+				}
+				//add board cell to board
 				grid[row][col] = boardCell;
 			}
 		}
@@ -99,26 +110,31 @@ public class Board
 	
 	private void buildAdjLists()
 	{
+		//initialize three board cell variables to use
+		BoardCell currentCell, centerCell, secretPassage;
+		//iterate through grid
 		for (int row = 0; row < numRows; row++)
 		{
 			for (int col = 0; col < numColumns; col++)
 			{
-				BoardCell currentCell = getCell(row,col);
-				BoardCell centerCell;
-				
-				
+				//set current cell to the cell at the current row and column
+				currentCell = getCell(row,col);
+	
 				if (currentCell.isSecretPassage())
 				{
+					//get the center cell for the room to which the secret passage belongs
 					centerCell = getRoom(currentCell).getCenterCell();
-					BoardCell secretPassage = getRoom(currentCell.getSecretPassage()).getCenterCell();
+					//get the center cell for the room to which the secret passage leads
+					secretPassage = getRoom(currentCell.getSecretPassage()).getCenterCell();
+					//add the destination of the passage to the center cell
 					centerCell.addAdjacency(secretPassage);
-					
 				}
-				
 				if (getRoom(currentCell).getName().equals("Walkway"))
 				{
+					//check up, down, left, right of current cell if not out of bounds
 					if (row != 0 && getRoom(getCell(row-1,col)).getName().equals("Walkway"))
 					{
+						//add [up] cell to current cell adjacency list
 						currentCell.addAdjacency(getCell(row-1,col));
 					}
 					if (row != numRows-1 && getRoom(getCell(row+1,col)).getName().equals("Walkway"))
@@ -139,8 +155,11 @@ public class Board
 						switch (getCell(row,col).getDoorDirection())
 						{
 						case UP:
+							//get the center cell of the room [above] the current cell
 							centerCell = getRoom(getCell(row-1,col)).getCenterCell();
+							//add the center cell of the room to the adjacency list of the current cell
 							currentCell.addAdjacency(centerCell);
+							//ALSO add the current cell to the room's center cell adjacency list
 							centerCell.addAdjacency(currentCell);
 							break;
 						case DOWN:
@@ -214,10 +233,13 @@ public class Board
 			String line;
 			while ((line = reader.readLine()) != null)
 			{
+				// a slash is a comment and should not be read in as data
 				if (line.charAt(0) != '/')
 				{
 					String[] row = line.split(", ");
+					//make a new room using the name given in the text file
 					Room room = new Room(row[1]);
+					//add to the roomMap with the char that represents the room as the key
 					roomMap.put(row[2].charAt(0), room);
 				}
 			}
@@ -238,11 +260,13 @@ public class Board
 			String line;
 			while ((line = reader.readLine()) != null)
 			{
+				//get a row from the csv file and add it to the array list
 				String[] row = line.split(",");
 				arrList.add(row);
 			}
 			reader.close();
 			
+			//set the rows and columns based on the retrieved data
 			this.numRows = arrList.size();
 			this.numColumns = arrList.get(0).length;
 		}
@@ -253,10 +277,8 @@ public class Board
 		return arrList;
 	}
 	
-	public Room getRoom(char c)
-	{
-		return roomMap.get(c);
-	}
+	public Room getRoom(char c) { return roomMap.get(c); }
+	
 	public Room getRoom(BoardCell cell)
 	{
 		char c = cell.getInitial();
