@@ -11,10 +11,11 @@ import static org.junit.Assert.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import clueGame.Board;
-import clueGame.BoardCell;
-import clueGame.DoorDirection;
-import clueGame.Room;
+
+import cluegame.Board;
+import cluegame.BoardCell;
+import cluegame.DoorDirection;
+import cluegame.Room;
 
 public class FileInitTests306 {
 	// Constants that I will usse to test whether the file was loaded correctly

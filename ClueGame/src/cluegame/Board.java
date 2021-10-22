@@ -1,4 +1,4 @@
-package clueGame;
+package cluegame;
 
 
 import java.io.BufferedReader;
@@ -7,19 +7,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public class Board
 {
 	private BoardCell[][] grid;
-	private Set<BoardCell> targets, visited;
+	private Set<BoardCell> targets;
+	private Set<BoardCell> visited;
 	
-	private int numRows, numColumns;
+	private int numRows;
+	private int numColumns;
 	
-	private String layoutConfigFile, setupConfigFile;
+	private String layoutConfigFile;
+	private String setupConfigFile;
 	Map<Character, Room> roomMap;
 	
+	private static final String WALKWAY = "Walkway";
 	
 	//singleton design pattern
 	private static Board theInstance = new Board();
@@ -36,25 +41,25 @@ public class Board
 	public void initialize()
 	{
 		//initialize a board
-		ArrayList<String[]> arrList = new ArrayList<String[]>();
+		List<String[]> list = new ArrayList<>();
 		try
 		{
 			//load setup and config files
-			//make roomMap and load board data into arrList
+			//make roomMap and load board data into list
 			loadSetupConfig();
-			arrList = loadLayoutConfig();
+			list = loadLayoutConfig();
 		} 
 		catch (BadConfigFormatException e)
 		{
 			e.printStackTrace();
 		}
-		//build board using board data from arrList
-    	buildBoard(arrList);
+		//build board using board data from list
+    	buildBoard(list);
     	//build adjacency list for all cells
     	buildAdjLists();
 	}
 	
-	private void buildBoard(ArrayList<String[]> arrList)
+	private void buildBoard(List<String[]> list)
 	{
 		//initialize new grid
 		grid = new BoardCell[numRows][numColumns];
@@ -63,12 +68,12 @@ public class Board
 			for (int col = 0; col < numColumns; col++)
 			{
 				//make board cell from data
-				BoardCell boardCell = new BoardCell(row, col, arrList.get(row)[col].charAt(0));
+				BoardCell boardCell = new BoardCell(row, col, list.get(row)[col].charAt(0));
 				
 				//if the cell value is 2 char long then its a room center, label, or a door
-				if (arrList.get(row)[col].length() > 1)
+				if (list.get(row)[col].length() > 1)
 				{
-					char secondChar = arrList.get(row)[col].charAt(1);
+					char secondChar = list.get(row)[col].charAt(1);
 					Room room = getRoom(boardCell.getInitial());
 					//check whether room center, label, or door (+ direction)
 					switch (secondChar)
@@ -111,7 +116,8 @@ public class Board
 	private void buildAdjLists()
 	{
 		//initialize three board cell variables to use
-		BoardCell currentCell, centerCell, secretPassage;
+		BoardCell currentCell;
+		BoardCell centerCell;
 		//iterate through grid
 		for (int row = 0; row < numRows; row++)
 		{
@@ -120,37 +126,37 @@ public class Board
 				//set current cell to the cell at the current row and column
 				currentCell = getCell(row,col);
 	
-				if (currentCell.isSecretPassage())
+				if (Boolean.TRUE.equals(currentCell.isSecretPassage()))
 				{
 					//get the center cell for the room to which the secret passage belongs
 					centerCell = getRoom(currentCell).getCenterCell();
 					//get the center cell for the room to which the secret passage leads
-					secretPassage = getRoom(currentCell.getSecretPassage()).getCenterCell();
+					BoardCell secretPassage = getRoom(currentCell.getSecretPassage()).getCenterCell();
 					//add the destination of the passage to the center cell
 					centerCell.addAdjacency(secretPassage);
 				}
-				if (getRoom(currentCell).getName().equals("Walkway"))
+				if (getRoom(currentCell).getName().equals(WALKWAY))
 				{
 					//check up, down, left, right of current cell if not out of bounds
-					if (row != 0 && getRoom(getCell(row-1,col)).getName().equals("Walkway"))
+					if (row != 0 && getRoom(getCell(row-1,col)).getName().equals(WALKWAY))
 					{
 						//add [up] cell to current cell adjacency list
 						currentCell.addAdjacency(getCell(row-1,col));
 					}
-					if (row != numRows-1 && getRoom(getCell(row+1,col)).getName().equals("Walkway"))
+					if (row != numRows-1 && getRoom(getCell(row+1,col)).getName().equals(WALKWAY))
 					{
 						currentCell.addAdjacency(getCell(row+1,col));
 					}
-					if (col != 0 && getRoom(getCell(row,col-1)).getName().equals("Walkway"))
+					if (col != 0 && getRoom(getCell(row,col-1)).getName().equals(WALKWAY))
 					{
 						currentCell.addAdjacency(getCell(row,col-1));
 					}
-					if (col != numColumns-1 && getRoom(getCell(row,col+1)).getName().equals("Walkway"))
+					if (col != numColumns-1 && getRoom(getCell(row,col+1)).getName().equals(WALKWAY))
 					{
 						currentCell.addAdjacency(getCell(row,col+1));
 					}
 					
-					if (currentCell.isDoorway())
+					if (Boolean.TRUE.equals(currentCell.isDoorway()))
 					{
 						switch (getCell(row,col).getDoorDirection())
 						{
@@ -188,8 +194,8 @@ public class Board
 	
 	public void calcTargets(BoardCell startCell, int pathlength)
 	{
-		visited = new HashSet<BoardCell>();
-		targets = new HashSet<BoardCell>();
+		visited = new HashSet<>();
+		targets = new HashSet<>();
 		visited.add(startCell);
 		
 		findAllTargets(startCell, pathlength);
@@ -206,7 +212,7 @@ public class Board
 			
 			visited.add(adjCell);
 			
-			if ( (numSteps == 1 && !adjCell.isOccupied()) || adjCell.isRoomCenter() )
+			if ( (numSteps == 1 && !adjCell.isOccupied()) || Boolean.TRUE.equals(adjCell.isRoomCenter()) )
 			{
 				targets.add(adjCell);
 			}
@@ -226,10 +232,9 @@ public class Board
 	
 	public void loadSetupConfig() throws BadConfigFormatException
 	{
-		roomMap = new HashMap<Character, Room>();
-		try
+		roomMap = new HashMap<>();
+		try ( BufferedReader reader = new BufferedReader(new FileReader(this.setupConfigFile)) )
 		{
-			BufferedReader reader = new BufferedReader(new FileReader(this.setupConfigFile));
 			String line;
 			while ((line = reader.readLine()) != null)
 			{
@@ -243,7 +248,6 @@ public class Board
 					roomMap.put(row[2].charAt(0), room);
 				}
 			}
-			reader.close();
 		}
 		catch (IOException e)
 		{
@@ -251,30 +255,28 @@ public class Board
 		}
 	}
 	
-	public ArrayList<String[]> loadLayoutConfig() throws BadConfigFormatException
+	public List<String[]> loadLayoutConfig() throws BadConfigFormatException
 	{
-		ArrayList<String[]> arrList = new ArrayList<String[]>();
-		try
+		List<String[]> list = new ArrayList<>();
+		try ( BufferedReader reader = new BufferedReader(new FileReader(this.layoutConfigFile)) )
 		{
-			BufferedReader reader = new BufferedReader(new FileReader(this.layoutConfigFile));
 			String line;
 			while ((line = reader.readLine()) != null)
 			{
 				//get a row from the csv file and add it to the array list
 				String[] row = line.split(",");
-				arrList.add(row);
+				list.add(row);
 			}
-			reader.close();
 			
 			//set the rows and columns based on the retrieved data
-			this.numRows = arrList.size();
-			this.numColumns = arrList.get(0).length;
+			this.numRows = list.size();
+			this.numColumns = list.get(0).length;
 		}
 		catch (IOException e)
 		{
 			throw new BadConfigFormatException();
 		}
-		return arrList;
+		return list;
 	}
 	
 	public Room getRoom(char c) { return roomMap.get(c); }

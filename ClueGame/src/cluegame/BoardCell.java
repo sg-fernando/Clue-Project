@@ -1,17 +1,23 @@
-package clueGame;
+package cluegame;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class BoardCell
 {
-	private int row, col;
+	private int row;
+	private int col;
 	
-	private Boolean isOccupied = false, isRoomCenter = false, isLabel = false, isDoorway = false, isSecretPassage = false;
+	private Boolean isOccupied = false;
+	private Boolean isRoomCenter = false;
+	private Boolean isLabel = false;
+	private Boolean isDoorway = false;
+	private Boolean isSecretPassage = false;
 	
-	private Set<BoardCell> adjList = new HashSet<BoardCell>();
+	private Set<BoardCell> adjList = new HashSet<>();
 
-	private char secretPassage, initial;
+	private char secretPassage;
+	private char initial;
 	
 	private DoorDirection doorDirection = DoorDirection.NONE;
 	

@@ -8,8 +8,9 @@ package tests;
 import java.io.FileNotFoundException;
 
 import org.junit.Test;
-import clueGame.BadConfigFormatException;
-import clueGame.Board;
+
+import cluegame.BadConfigFormatException;
+import cluegame.Board;
 
 public class ExceptionTests306 {
 
