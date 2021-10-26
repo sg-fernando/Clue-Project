@@ -13,7 +13,7 @@ public class BoardCell
 	private Boolean isLabel = false;
 	private Boolean isDoorway = false;
 	private Boolean isSecretPassage = false;
-	
+	 
 	private Set<BoardCell> adjList = new HashSet<>();
 
 	private char secretPassage;
