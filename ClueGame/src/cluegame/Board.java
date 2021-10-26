@@ -223,7 +223,7 @@ public class Board
 			visited.remove(adjCell);
 		}
 	}
-	
+	s
 	public void setConfigFiles(String layoutConfigFile, String setupConfigFile)
 	{
 		this.layoutConfigFile = layoutConfigFile;
