@@ -28,18 +28,6 @@ public class BoardCell
 		this.initial = initial;
 	}
 	
-	public char getInitial() { return this.initial; }
-	
-	public int getRow() { return this.row; }
-	
-	public int getCol() { return this.col; }
-	
-	public Set<BoardCell> getAdjList() { return adjList; }
-	public void addAdjacency(BoardCell cell)
-	{
-		adjList.add(cell);
-	}
-	
 	public Boolean isOccupied() { return this.isOccupied; }
 	public void setOccupied(Boolean isOccupied)
 	{
