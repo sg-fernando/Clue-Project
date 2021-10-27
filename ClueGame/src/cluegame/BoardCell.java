@@ -39,6 +39,13 @@ public class BoardCell
 	{
 		adjList.add(cell);
 	}
+	
+	public Boolean isOccupied() { return this.isOccupied; }
+	public void setOccupied(Boolean isOccupied)
+	{
+		this.isOccupied = isOccupied;
+	}
+
 	public Boolean isRoomCenter() { return this.isRoomCenter; }
 	public void setRoomCenter(Boolean isRoomCenter)
 	{
