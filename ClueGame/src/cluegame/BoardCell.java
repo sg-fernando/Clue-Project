@@ -35,7 +35,11 @@ public class BoardCell
 	public int getCol() { return this.col; }
 	
 	public Set<BoardCell> getAdjList() { return adjList; }
-	public void addAdjacency(BoardCel
+	public void addAdjacency(BoardCell cell)
+	{
+		adjList.add(cell);
+	}
+	
 	public Boolean isOccupied() { return this.isOccupied; }
 	public void setOccupied(Boolean isOccupied)
 	{
