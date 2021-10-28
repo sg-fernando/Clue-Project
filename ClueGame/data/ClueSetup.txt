@@ -11,3 +11,17 @@ Room, Front Yard, Y
 // other spaces
 Space, Unused, X
 Space, Walkway, Z
+//players
+Player, Miles, Green
+Player, Dorothy, Purple
+Player, Blanche, Red
+Player, Rose, White
+Player, Sophia, Blue
+Player, Stan, Yellow
+//weapons
+Weapon, Bathrobe
+Weapon, Magnum Research Micro Desert Eagle
+Weapon, Lipstick
+Weapon, Sophia's Purse
+Weapon, Feathered Slipper
+Weapon, Whipped Cream
