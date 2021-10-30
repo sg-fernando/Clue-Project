@@ -11,14 +11,16 @@ import org.junit.Test;
 
 import cluegame.Board;
 import cluegame.BoardCell;
+import cluegame.Card;
+import cluegame.Player;
 
-public class gameSetupTests {
-	// We make the Board static because we can load it one time and 
-	// then do all the tests. 
+public class gameSetupTests
+{
 	private static Board board;
 	
 	@Before
-	public void setUp() {
+	public void setUp()
+	{
 		// Board is singleton, get the only instance
 		board = Board.getInstance();
 		// set the file names to use my config files
@@ -26,12 +28,18 @@ public class gameSetupTests {
 		// Initialize will load config files 
 		board.initialize();
 	}
-
-	// Ensure that player does not move around within room
-	// These cells are LIGHT ORANGE on the planning spreadsheet
 	@Test
-	public void testAdjacenciesRooms()
+	public void testDeck()
 	{
-		
+		Set<Card> testDeck = board.getDeck();
+		assertEquals(6+6+9, testDeck.size());
+	}
+	
+	@Test
+	public void testPlayers()
+	{
+		Set<Player> testPlayers = board.getPlayers();
+		assertEquals(6, testPlayers.size());
+		assertTrue()
 	}
 }

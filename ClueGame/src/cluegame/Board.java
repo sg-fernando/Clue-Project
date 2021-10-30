@@ -22,7 +22,9 @@ public class Board
 	
 	private String layoutConfigFile;
 	private String setupConfigFile;
-	Map<Character, Room> roomMap;
+	private Map<Character, Room> roomMap;
+	private Set<Card> deck;
+	private Set<Player> players;
 	
 	private static final String WALKWAY = "Walkway";
 	
@@ -233,20 +235,45 @@ public class Board
 	public void loadSetupConfig() throws BadConfigFormatException
 	{
 		roomMap = new HashMap<>();
+		deck = new HashSet<>();
+		players = new HashSet<>();
 		try ( BufferedReader reader = new BufferedReader(new FileReader(this.setupConfigFile)) )
 		{
 			String line;
 			while ((line = reader.readLine()) != null)
 			{
 				// a slash is a comment and should not be read in as data
-				if (line.charAt(0) != '/')
+				if (line.charAt(0) == '/')
 				{
-					String[] row = line.split(", ");
-					//make a new room using the name given in the text file
+					continue;
+				}
+				String[] row = line.split(", ");
+				//make a new room using the name given in the text file
+				if (row[0].equals("Room") || row[0].equals("Space"))
+				{
 					Room room = new Room(row[1]);
 					//add to the roomMap with the char that represents the room as the key
 					roomMap.put(row[2].charAt(0), room);
 				}
+				else if (row[0].equals("Player"))
+				{
+					Player player;
+					if (row[1].equals("Blanche"))
+					{
+						player = new HumanPlayer(row[1], row[2].charAt(0));
+					}
+					else
+					{
+						player = new ComputerPlayer(row[1], row[2].charAt(0));
+					}
+					players.add(player);
+				}
+				if (!row[0].equals("Space"))
+				{
+					Card card = new Card(row[0], row[1]);
+					deck.add(card);
+				}
+				
 			}
 		}
 		catch (IOException e)
@@ -296,4 +323,7 @@ public class Board
 	public BoardCell getCell(int row, int col) { return grid[row][col]; }
 	
 	public Set<BoardCell> getAdjList(int row, int col) { return getCell(row,col).getAdjList(); }
+	
+	public Set<Card> getDeck() { return deck; }
+	public Set<Player> getPlayers() { return players; }
 }

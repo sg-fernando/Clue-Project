@@ -13,7 +13,7 @@ Space, Unused, X
 Space, Walkway, Z
 //players
 Player, Miles, g
-Player, Dorothy, v
+Player, Dorothy, p
 Player, Blanche, r
 Player, Rose, w
 Player, Sophia, b
