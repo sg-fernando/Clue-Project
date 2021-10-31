@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 public class Board
@@ -26,6 +27,8 @@ public class Board
 	private Set<Card> deck;
 	private Set<Player> players;
 	
+	private Solution solution;
+	
 	private static final String WALKWAY = "Walkway";
 	
 	//singleton design pattern
@@ -35,6 +38,7 @@ public class Board
 	{	
 		super();
 	}
+
 	public static Board getInstance()
     {
 		return theInstance;
@@ -59,6 +63,80 @@ public class Board
     	buildBoard(list);
     	//build adjacency list for all cells
     	buildAdjLists();
+	}
+	
+	public void deal()
+	{
+		dealSolution();
+		
+		int rand;
+		int count;
+		for (Player player : players)
+		{
+			count = 0;
+			rand = new Random().nextInt(deck.size()-2);
+			for (Card card : deck)
+			{
+				if (count >= rand && count <= rand + 2)
+				{
+					player.updateHand(card);
+				}
+				count++;
+			}
+			for (Card card : player.getHand())
+			{
+				deck.remove(card);
+			}
+		}
+		System.out.println(deck.size());
+	}
+	
+	private void dealSolution()
+	{
+		int player = 0;
+		int room = 0;
+		int weapon = 0;
+		int randP = new Random().nextInt(6);
+		int randR = new Random().nextInt(9);
+		int randW = new Random().nextInt(6);
+		
+		Card playerCard = null;
+		Card roomCard = null;
+		Card weaponCard = null;
+	
+		for (Card card : deck)
+		{
+			if (card.getType() == CardType.PLAYER)
+			{
+				if (player == randP)
+				{
+					playerCard = card;
+				}
+				player++;
+			}
+			else if (card.getType() == CardType.ROOM)
+			{
+				if (room == randR)
+				{
+					roomCard = card;
+				}
+				room++;
+			}
+			else if (card.getType() == CardType.WEAPON)
+			{
+				if (weapon == randW)
+				{
+					weaponCard = card;
+				}
+				weapon++;
+			}
+		}
+		
+		deck.remove(playerCard);
+		deck.remove(roomCard);
+		deck.remove(weaponCard);
+		
+		solution = new Solution(playerCard, roomCard, weaponCard);
 	}
 	
 	private void buildBoard(List<String[]> list)
@@ -325,5 +403,6 @@ public class Board
 	public Set<BoardCell> getAdjList(int row, int col) { return getCell(row,col).getAdjList(); }
 	
 	public Set<Card> getDeck() { return deck; }
+	public Solution getSolution() { return solution; }
 	public Set<Player> getPlayers() { return players; }
 }

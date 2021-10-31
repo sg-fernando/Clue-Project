@@ -1,16 +1,21 @@
 package cluegame;
 
 import java.awt.Color;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Player
 {
 	private String name;
 	private Color color;
 	private Boolean isHuman;
-	private BoardCell currentCell;
+	private int row;
+	private int column;
+	private Set<Card> hand;
 	
 	protected Player(String name, char c, Boolean isHuman)
 	{
+		this.hand = new HashSet<>();
 		this.name = name;
 		this.isHuman = isHuman;
 		switch (c)
@@ -39,7 +44,12 @@ public class Player
 		}
 	}
 	
+	public void updateHand(Card card)
+	{
+		hand.add(card);
+	}
 	
+	public Set<Card> getHand() { return hand; }
 	public String getName() { return name; }
 	public Color getColor() { return color; }
 	public Boolean isHuman() { return isHuman; }

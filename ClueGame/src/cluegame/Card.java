@@ -22,6 +22,11 @@ public class Card
 		}
 	}
 	
+	public Boolean equals(Card other)
+	{
+		return (other.name.equals(this.name) && other.type == this.type);
+	}
+	
 	public CardType getType() { return type; }
 	public String getName() { return name; }
 }
