@@ -52,7 +52,24 @@ public class gameSetupTests
 		assertTrue(checkPlayerName(testPlayers, "Blanche"));
 		assertTrue(checkPlayerName(testPlayers, "Rose"));
 		assertTrue(checkPlayerName(testPlayers, "Sophia"));
-		assertTrue(checkPlayerName(testPlayers, "Stan"));		
+		assertTrue(checkPlayerName(testPlayers, "Stan"));
+		
+		int humanCount = 0;
+		int computerCount = 0;
+		for (Player player : testPlayers)
+		{
+			if (player.isHuman())
+			{
+				humanCount++;
+			}
+			else
+			{
+				computerCount++;
+			}
+		}
+		
+		assertEquals(1, humanCount);
+		assertEquals(5, computerCount);
 	}
 	
 	private Boolean checkCardName(Set<Card> deck, String name)

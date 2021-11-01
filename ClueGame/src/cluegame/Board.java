@@ -88,7 +88,6 @@ public class Board
 				deck.remove(card);
 			}
 		}
-		System.out.println(deck.size());
 	}
 	
 	private void dealSolution()
@@ -336,13 +335,16 @@ public class Board
 				else if (row[0].equals("Player"))
 				{
 					Player player;
-					if (row[1].equals("Blanche"))
+					String[] position = row[4].split(",");
+					int rowPos = Integer.parseInt(position[0]);
+					int colPos = Integer.parseInt(position[1]);
+					if (row[3].equals("Human"))
 					{
-						player = new HumanPlayer(row[1], row[2].charAt(0));
+						player = new HumanPlayer(row[1], row[2].charAt(0),rowPos,colPos);
 					}
 					else
 					{
-						player = new ComputerPlayer(row[1], row[2].charAt(0));
+						player = new ComputerPlayer(row[1], row[2].charAt(0),rowPos,colPos);
 					}
 					players.add(player);
 				}

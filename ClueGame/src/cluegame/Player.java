@@ -13,11 +13,13 @@ public class Player
 	private int column;
 	private Set<Card> hand;
 	
-	protected Player(String name, char c, Boolean isHuman)
+	protected Player(String name, char c, Boolean isHuman, int row, int column)
 	{
 		this.hand = new HashSet<>();
 		this.name = name;
 		this.isHuman = isHuman;
+		this.row = row;
+		this.column = column;
 		switch (c)
 		{
 		case 'g':
