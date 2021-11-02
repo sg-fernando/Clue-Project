@@ -65,7 +65,7 @@ public class Board
     	buildAdjLists();
 	}
 	
-	public Card handleSuggestion(Card suggestion)
+	public Card handleSuggestion(Solution suggestion)
 	{
 		for (Player p : players)
 		{
