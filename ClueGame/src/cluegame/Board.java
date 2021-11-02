@@ -65,6 +65,23 @@ public class Board
     	buildAdjLists();
 	}
 	
+	public Card handleSuggestion(Card suggestion)
+	{
+		for (Player p : players)
+		{
+			if (p.disproveSuggestion(suggestion) != null)
+			{
+				return p.disproveSuggestion(suggestion);
+			}
+		}
+		return null;
+	}
+	
+	public boolean checkAccusation(Card player, Card room, Card weapon)
+	{
+		return solution.getPerson().equals(player) && solution.getRoom().equals(room) && solution.getWeapon().equals(weapon);
+	}
+	
 	public void deal()
 	{
 		dealSolution();

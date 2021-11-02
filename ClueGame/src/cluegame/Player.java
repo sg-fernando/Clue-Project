@@ -2,6 +2,7 @@ package cluegame;
 
 import java.awt.Color;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 public class Player
@@ -12,6 +13,7 @@ public class Player
 	private int row;
 	private int column;
 	private Set<Card> hand;
+	private Set<Card> seen;
 	
 	protected Player(String name, char c, Boolean isHuman, int row, int column)
 	{
@@ -46,9 +48,35 @@ public class Player
 		}
 	}
 	
+	public Card disproveSuggestion(Card suggestion)
+	{
+		int amount = 0;
+		for (Card c : hand)
+		{
+			if (suggestion.equals(c))
+			{
+				amount++;
+			}
+		}
+		
+		if (amount == 1)
+		{
+			
+		}
+		
+		return null;
+		
+		int rand = new Random().nextInt();
+	}
+	
 	public void updateHand(Card card)
 	{
 		hand.add(card);
+	}
+	
+	public void updateSeen(Card seenCard)
+	{
+		seen.add(seenCard);
 	}
 	
 	public Set<Card> getHand() { return hand; }
