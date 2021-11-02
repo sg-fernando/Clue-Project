@@ -58,15 +58,33 @@ public class Player
 				amount++;
 			}
 		}
-		
 		if (amount == 1)
 		{
-			
+			for (Card c : hand)
+			{
+				if (Boolean.TRUE.equals(suggestion.equals(c)))
+				{
+					return c;
+				}
+			}
 		}
-		
+		if (amount > 1)
+		{
+			int rand = new Random().nextInt(hand.size());
+			int count = 0;
+			for (Card c : hand)
+			{
+				if (Boolean.TRUE.equals(suggestion.equals(c)))
+				{
+					if (count == rand)
+					{
+						return c;
+					}
+					count++;
+				}
+			}
+		}
 		return null;
-		
-		int rand = new Random().nextInt();
 	}
 	
 	public void updateHand(Card card)
@@ -83,6 +101,11 @@ public class Player
 	public String getName() { return name; }
 	public Color getColor() { return color; }
 	public Boolean isHuman() { return isHuman; }
+	
 
-
+	//testing methods
+	public void setHand(Set<Card> hand)
+	{
+		this.hand = hand;
+	}
 }
