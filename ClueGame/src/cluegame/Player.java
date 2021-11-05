@@ -108,4 +108,12 @@ public class Player
 	{
 		this.hand = hand;
 	}
+
+	public int getRow() {
+		return row;
+	}
+
+	public int getColumn() {
+		return column;
+	}
 }

@@ -288,13 +288,14 @@ public class Board
 		}
 	}
 	
-	public void calcTargets(BoardCell startCell, int pathlength)
+	public Set<BoardCell> calcTargets(BoardCell startCell, int pathlength)
 	{
 		visited = new HashSet<>();
 		targets = new HashSet<>();
 		visited.add(startCell);
 		
 		findAllTargets(startCell, pathlength);
+		return targets;
 	}
 	
 	private void findAllTargets(BoardCell thisCell, int numSteps)
@@ -371,6 +372,14 @@ public class Board
 					deck.add(card);
 				}
 				
+			}
+			
+			for (Player player : players)
+			{
+				if (!player.isHuman())
+				{
+					((ComputerPlayer)player).setUnseen(deck);
+				}
 			}
 		}
 		catch (IOException e)
