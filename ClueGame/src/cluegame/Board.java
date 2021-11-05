@@ -65,11 +65,11 @@ public class Board
     	buildAdjLists();
 	}
 	
-	public Card handleSuggestion(Card suggestion)
+	public Card handleSuggestion(Card suggestion, Player player)
 	{
 		for (Player p : players)
 		{
-			if (p.disproveSuggestion(suggestion) != null)
+			if (p.disproveSuggestion(suggestion) != null && (player != p))
 			{
 				return p.disproveSuggestion(suggestion);
 			}
@@ -424,4 +424,18 @@ public class Board
 	public Set<Card> getDeck() { return deck; }
 	public Solution getSolution() { return solution; }
 	public Set<Player> getPlayers() { return players; }
+	
+	// testing; set up known solution values for comparison
+	public void setSolution(Solution sol) {
+		this.solution = sol;
+	}
+	public void setPlayers(HashSet<Player> p) {
+		this.players = p;
+	}
+	
+	public boolean checkAccusation(Solution S) {
+		if(this.getSolution().equals(S)) {
+			return true;
+		} else return false;
+	}
 }
