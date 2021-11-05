@@ -13,6 +13,11 @@ public class Solution
 		this.weapon = weapon;
 	}
 	
+	public Boolean contains(Card card)
+	{
+		return person.equals(card) || room.equals(card) || weapon.equals(card);
+	}
+	
 	public Card getPerson() { return person; }
 	public Card getRoom() { return room; }
 	public Card getWeapon() { return weapon; }

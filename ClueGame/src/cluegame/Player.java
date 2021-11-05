@@ -48,12 +48,12 @@ public class Player
 		}
 	}
 	
-	public Card disproveSuggestion(Card suggestion)
+	public Card disproveSuggestion(Solution suggestion)
 	{
 		int amount = 0;
 		for (Card c : hand)
 		{
-			if (suggestion.equals(c))
+			if (Boolean.TRUE.equals(suggestion.contains(c)))
 			{
 				amount++;
 			}
@@ -62,7 +62,7 @@ public class Player
 		{
 			for (Card c : hand)
 			{
-				if (Boolean.TRUE.equals(suggestion.equals(c)))
+				if (Boolean.TRUE.equals(suggestion.contains(c)))
 				{
 					return c;
 				}
@@ -74,7 +74,7 @@ public class Player
 			int count = 0;
 			for (Card c : hand)
 			{
-				if (Boolean.TRUE.equals(suggestion.equals(c)))
+				if (Boolean.TRUE.equals(suggestion.contains(c)))
 				{
 					if (count == rand)
 					{
@@ -107,5 +107,13 @@ public class Player
 	public void setHand(Set<Card> hand)
 	{
 		this.hand = hand;
+	}
+
+	public int getRow() {
+		return row;
+	}
+
+	public int getColumn() {
+		return column;
 	}
 }
