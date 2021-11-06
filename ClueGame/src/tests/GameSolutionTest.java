@@ -90,75 +90,72 @@ public class GameSolutionTest
 	@Test
 	public void disproveSuggestion()
 	{	
-		ComputerPlayer p = new ComputerPlayer("Miles", 'g', 0, 7);
+		ComputerPlayer p1 = new ComputerPlayer("Miles", 'g', 0, 7);
 		HashSet<Card> hand = new HashSet<>();
 		hand.add(milesCard);
 		hand.add(garageCard);
 		hand.add(bathrobeCard);
-		p.setHand(hand);
+		p1.setHand(hand);
 		
 		ComputerPlayer p2 = new ComputerPlayer("Dorothy", 'p', 0, 16);
 		HashSet<Card> hand2 = new HashSet<>();
 		hand2.add(dorothyCard);
 		hand2.add(loungeCard);
-		hand2.add(bathrobeCard);
+		hand2.add(magnumCard);
 		p2.setHand(hand2);
 		
 		ComputerPlayer p3 = new ComputerPlayer("Blanche", 'r', 7, 23);
 		HashSet<Card> hand3 = new HashSet<>();
-		hand3.add(milesCard);
-		hand3.add(loungeCard);
-		hand3.add(magnumCard);
+		hand3.add(blancheCard);
+		hand3.add(sophRoomCard);
+		hand3.add(lipstickCard);
 		p3.setHand(hand3);
 		
-		Solution solutionTest = new Solution(milesCard, loungeCard, magnumCard);
+		Card suggestion = milesCard;
+		Card suggestion2 = loungeCard;
+		Card suggestion3 = lipstickCard;
+		
+		Solution solutionTest = new Solution(suggestion, suggestion2, suggestion3);
 		// ensuring true is returned if values match
 		// player matches
-//		assertTrue(p.disproveSuggestion(milesCard) != null);
+		assertTrue(p1.disproveSuggestion(solutionTest) != null);
 //		// room matches
-//		assertTrue(p2.disproveSuggestion(loungeCard) != null);
+		assertTrue(p2.disproveSuggestion(solutionTest) != null);
 //		// weapon matches
-//		assertTrue(p3.disproveSuggestion(magnumCard) != null);
-		
 		assertTrue(p3.disproveSuggestion(solutionTest) != null);
+		
 
 		
-		solutionTest = new Solution(magnumCard, garageCard, dorothyCard);
+		solutionTest = new Solution(stanCard, yardCard, creamCard);
 		// and false otherwise (i.e. null is returned)
 		// if no cards in player hand match input
-//		assertFalse(p.disproveSuggestion(magnumCard) != null);
-//		assertFalse(p2.disproveSuggestion(garageCard) != null);
-//		assertFalse(p3.disproveSuggestion(dorothyCard) != null);
-		assertFalse(p3.disproveSuggestion(solutionTest) == null);
+		assertFalse(p1.disproveSuggestion(solutionTest) != null);
+		assertFalse(p2.disproveSuggestion(solutionTest) != null);
+		assertFalse(p3.disproveSuggestion(solutionTest) != null);
+		
 
 		
 		// and finally checking for random return:
 		solutionTest = new Solution(milesCard, garageCard, bathrobeCard);
-		boolean a, b, c;
-		a = false;
-		b = false;
-		c = false;
-		for(int i = 0; i < 50; i++) {
-			HashSet<Card> test = new HashSet<>();
-//			test.add(p.disproveSuggestion(milesCard));
-//			test.add(p.disproveSuggestion(garageCard));
-//			test.add(p.disproveSuggestion(bathrobeCard));
-			test.add(p.disproveSuggestion(solutionTest));
+		HashSet<Card> test = new HashSet<>();
+		for(int i = 0; i < 20; i++) {
+			test.add(p1.disproveSuggestion(solutionTest));
+			// elements of test are unique by properties
+			// of a hashset; so, if it gets to the same size
+			// as the hand in question, we know all 3
+			// unique cards must be returned by disproveSuggestion
 			if(test.size() == hand.size()) {
 				assert(true);
-			} else if(i == 49) assert(false);
+			} else if(i == 19) assert(false);
 		}
-		
-		
-		
 	}
 	
 	@Test
 	public void handleSuggestion()
 	{
-		Card suggestion = creamCard;
-		Card suggestion2 = garageCard;
-		Card suggestion3 = dorothyCard;
+		Card suggestion = stanCard;
+		Card suggestion2 = yardCard;
+		Card suggestion3 = creamCard;
 		
 		Solution solutionTest = new Solution(suggestion, suggestion2, suggestion3);
 		
@@ -173,16 +170,16 @@ public class GameSolutionTest
 		
 		ComputerPlayer p2 = new ComputerPlayer("Dorothy", 'p', 0, 16);
 		HashSet<Card> hand2 = new HashSet<>();
-		hand2.add(milesCard);
+		hand2.add(dorothyCard);
 		hand2.add(loungeCard);
-		hand2.add(bathrobeCard);
+		hand2.add(magnumCard);
 		p2.setHand(hand2);
 		
 		ComputerPlayer p3 = new ComputerPlayer("Blanche", 'r', 7, 23);
 		HashSet<Card> hand3 = new HashSet<>();
-		hand3.add(milesCard);
-		hand3.add(loungeCard);
-		hand3.add(magnumCard);
+		hand3.add(blancheCard);
+		hand3.add(sophRoomCard);
+		hand3.add(lipstickCard);
 		p3.setHand(hand3);
 		
 		pSet.add(p1);
@@ -194,15 +191,16 @@ public class GameSolutionTest
 		// handle suggestion iterates through
 		// pSet
 		// no one can disprove; null returned
-//		assertTrue(board.handleSuggestion(suggestion, p1) == null);
+		assertTrue(board.handleSuggestion(solutionTest, p1) == null);
+		
 //		// accusing player gets away with it (returns a card if
 //		// p1 is not the accusing player parameter)
-//		assertTrue(board.handleSuggestion(suggestion2, p1) == null);
-//		// ensures p2 disproves p1, p3 disproves p2.
-//		assertTrue(board.handleSuggestion(suggestion2, p2) == garageCard);
-//		assertTrue(board.handleSuggestion(suggestion3, p3) == dorothyCard);
+		solutionTest = new Solution(suggestion, garageCard, suggestion3);
 		assertTrue(board.handleSuggestion(solutionTest, p1) == null);
-
+//		// ensures p2 disproves p1, p3 disproves p2.
+		assertTrue(board.handleSuggestion(solutionTest, p2) == garageCard);
+		solutionTest = new Solution(dorothyCard, suggestion2, suggestion3);
+		assertTrue(board.handleSuggestion(solutionTest, p3) == dorothyCard);
 		
 	}
 	
