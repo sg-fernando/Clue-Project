@@ -91,7 +91,6 @@ public class Player
 	public void updateHand(Card card)
 	{
 		hand.add(card);
-		updateSeen(card);
 	}
 	
 	public void updateSeen(Card seenCard)

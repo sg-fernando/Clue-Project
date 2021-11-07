@@ -92,7 +92,7 @@ public class Board
 		{
 			count = 0;
 			rand = new Random().nextInt(deck.size()-2);
-			for (Card card : deck)
+			for (Card card : new HashSet<Card>(deck))
 			{
 				if (count >= rand && count <= rand + 2)
 				{
@@ -100,9 +100,9 @@ public class Board
 				}
 				count++;
 			}
-			for (Card card : player.getHand())
+			for (Card cardHand : player.getHand())
 			{
-				deck.remove(card);
+				deck.remove(cardHand);
 			}
 		}
 	}
