@@ -90,21 +90,21 @@ public class GameSolutionTest
 	@Test
 	public void disproveSuggestion()
 	{	
-		ComputerPlayer p1 = new ComputerPlayer("Miles", 'g', 0, 7);
+		ComputerPlayer p1 = new ComputerPlayer("Miles", 'g', 0, 7, null);
 		HashSet<Card> hand = new HashSet<>();
 		hand.add(milesCard);
 		hand.add(garageCard);
 		hand.add(bathrobeCard);
 		p1.setHand(hand);
 		
-		ComputerPlayer p2 = new ComputerPlayer("Dorothy", 'p', 0, 16);
+		ComputerPlayer p2 = new ComputerPlayer("Dorothy", 'p', 0, 16, null);
 		HashSet<Card> hand2 = new HashSet<>();
 		hand2.add(dorothyCard);
 		hand2.add(loungeCard);
 		hand2.add(magnumCard);
 		p2.setHand(hand2);
 		
-		ComputerPlayer p3 = new ComputerPlayer("Blanche", 'r', 7, 23);
+		ComputerPlayer p3 = new ComputerPlayer("Blanche", 'r', 7, 23, null);
 		HashSet<Card> hand3 = new HashSet<>();
 		hand3.add(blancheCard);
 		hand3.add(sophRoomCard);
@@ -161,21 +161,21 @@ public class GameSolutionTest
 		
 		HashSet<Player> pSet = new HashSet<>();
 		
-		ComputerPlayer p1 = new ComputerPlayer("Miles", 'g', 0, 7);
+		ComputerPlayer p1 = new ComputerPlayer("Miles", 'g', 0, 7, null);
 		HashSet<Card> hand = new HashSet<>();
 		hand.add(milesCard);
 		hand.add(garageCard);
 		hand.add(bathrobeCard);
 		p1.setHand(hand);
 		
-		ComputerPlayer p2 = new ComputerPlayer("Dorothy", 'p', 0, 16);
+		ComputerPlayer p2 = new ComputerPlayer("Dorothy", 'p', 0, 16, null);
 		HashSet<Card> hand2 = new HashSet<>();
 		hand2.add(dorothyCard);
 		hand2.add(loungeCard);
 		hand2.add(magnumCard);
 		p2.setHand(hand2);
 		
-		ComputerPlayer p3 = new ComputerPlayer("Blanche", 'r', 7, 23);
+		ComputerPlayer p3 = new ComputerPlayer("Blanche", 'r', 7, 23, null);
 		HashSet<Card> hand3 = new HashSet<>();
 		hand3.add(blancheCard);
 		hand3.add(sophRoomCard);
@@ -198,9 +198,9 @@ public class GameSolutionTest
 		solutionTest = new Solution(suggestion, garageCard, suggestion3);
 		assertTrue(board.handleSuggestion(solutionTest, p1) == null);
 //		// ensures p2 disproves p1, p3 disproves p2.
-		assertTrue(board.handleSuggestion(solutionTest, p2) == garageCard);
+		assertTrue(board.handleSuggestion(solutionTest, p2).equals(garageCard));
 		solutionTest = new Solution(dorothyCard, suggestion2, suggestion3);
-		assertTrue(board.handleSuggestion(solutionTest, p3) == dorothyCard);
+		assertTrue(board.handleSuggestion(solutionTest, p3).equals(dorothyCard));
 		
 	}
 	

@@ -8,18 +8,22 @@ public class ComputerPlayer extends Player
 
 	private Set<Card> unseen;
 	
-	public ComputerPlayer(String name, char color, int row, int column) {
+	public ComputerPlayer(String name, char color, int row, int column, Set<Card> unseen)
+	{
 		super(name, color, false, row, column);
-		removeUnseen();
+		this.unseen = unseen;
 	}
 	
-	private void removeUnseen()
+	@Override
+	public void updateHand(Card card)
 	{
-		Set<Card> hand = getHand();
-		for (Card card : hand)
-		{
-			unseen.remove(card);
-		}
+		super.updateHand(card);
+		removeUnseen(card);
+	}
+	
+	private void removeUnseen(Card card)
+	{
+		unseen.remove(card);
 	}
 	
 	private int countType(CardType type)
@@ -35,18 +39,17 @@ public class ComputerPlayer extends Player
 		return count;
 	}
 	
-	public Solution createSuggestion()
+	public Solution createSuggestion(Board board)
 	{
 		int player = 0;
-		int room = 0;
 		int weapon = 0;
 		int randP = new Random().nextInt(countType(CardType.PLAYER));
-		int randR = new Random().nextInt(countType(CardType.ROOM));
 		int randW = new Random().nextInt(countType(CardType.WEAPON));
 		
 		Card playerCard = null;
 		Card roomCard = null;
 		Card weaponCard = null;
+		String room = board.getRoom(board.getCell(getRow(), getColumn())).getName();
 	
 		for (Card card : unseen)
 		{
@@ -58,14 +61,6 @@ public class ComputerPlayer extends Player
 				}
 				player++;
 			}
-			else if (card.getType() == CardType.ROOM)
-			{
-				if (room == randR)
-				{
-					roomCard = card;
-				}
-				room++;
-			}
 			else if (card.getType() == CardType.WEAPON)
 			{
 				if (weapon == randW)
@@ -74,7 +69,12 @@ public class ComputerPlayer extends Player
 				}
 				weapon++;
 			}
+			else if (card.getName().equals(room))
+			{
+				roomCard = card;
+			}
 		}
+		
 		
 		Solution solution = new Solution(playerCard, roomCard, weaponCard);
 		

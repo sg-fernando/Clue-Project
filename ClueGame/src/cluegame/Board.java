@@ -362,7 +362,7 @@ public class Board
 					}
 					else
 					{
-						player = new ComputerPlayer(row[1], row[2].charAt(0),rowPos,colPos);
+						player = new ComputerPlayer(row[1], row[2].charAt(0),rowPos,colPos,deck);
 					}
 					players.add(player);
 				}
@@ -372,14 +372,6 @@ public class Board
 					deck.add(card);
 				}
 				
-			}
-			
-			for (Player player : players)
-			{
-				if (!player.isHuman())
-				{
-					((ComputerPlayer)player).setUnseen(deck);
-				}
 			}
 		}
 		catch (IOException e)
