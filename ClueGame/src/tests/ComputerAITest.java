@@ -1,7 +1,5 @@
 package tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
@@ -12,9 +10,7 @@ import org.junit.Test;
 import cluegame.Board;
 import cluegame.BoardCell;
 import cluegame.Card;
-import cluegame.CardType;
 import cluegame.ComputerPlayer;
-import cluegame.Player;
 import cluegame.Solution;
 
 public class ComputerAITest
@@ -24,26 +20,12 @@ public class ComputerAITest
 	private static Card milesCard = new Card("Player","Miles");
 	private static Card dorothyCard = new Card("Player","Dorothy");
 	private static Card blancheCard = new Card("Player","Blanche");
-//	private static Card roseCard = new Card("Player","Rose");
-//	private static Card sophiaCard = new Card("Player","Sophia");
-//	private static Card stanCard = new Card("Player","Stan");
 	
 	private static Card garageCard = new Card("Room","Garage");
-//	private static Card loungeCard = new Card("Room","Lounge");
-//	private static Card sophRoomCard = new Card("Room","Sophia's Bedroom");
-//	private static Card roseRoomCard = new Card("Room","Rose's Bedroom");
-//	private static Card bathroomCard = new Card("Room","Bathroom");
-//	private static Card dorRoomCard = new Card("Room","Dorothy's Bedroom");
-//	private static Card kitchenCard = new Card("Room","Kitchen");
-//	private static Card blanRoomCard = new Card("Room","Blanche's Room");
-//	private static Card yardCard = new Card("Room","Front Yard");
 	
 	private static Card bathrobeCard = new Card("Weapon","Bathrobe");
 	private static Card magnumCard = new Card("Weapon","Magnum Research Micro Desert Eagle");
 	private static Card lipstickCard = new Card("Weapon","Lipstick");
-//	private static Card purseCard = new Card("Weapon","Sophia's Purse");
-//	private static Card slipperCard = new Card("Weapon","Feathered Slipper");
-//	private static Card creamCard = new Card("Weapon","Whipped Cream");
 	
 	@Before
 	public void setUp()
@@ -57,7 +39,7 @@ public class ComputerAITest
 	}
 	
 	@Test
-	public void selectTargets()
+	public void createSuggestion()
 	{
 		Set<Card> testDeck = board.getDeck();
 		ComputerPlayer testComputer = new ComputerPlayer("Computer", ' ', 2, 20, testDeck);
@@ -137,15 +119,121 @@ public class ComputerAITest
 		assertTrue(bathrobeCount > 0);
 		assertTrue(magnumCount > 0);
 		assertTrue(lipstickCount > 0);
+		
+		
+		//test solution card not in hand
+		testDeck.clear();
+		testDeck.add(milesCard);
+		testDeck.add(dorothyCard);
+		testDeck.add(bathrobeCard);
+		testDeck.add(magnumCard);
+		testComputer.setUnseen(testDeck);
+		testComputer.updateHand(milesCard);
+		testComputer.updateHand(bathrobeCard);
+		testSuggestion = testComputer.createSuggestion(board);
+		assertTrue(testSuggestion.getPerson().equals(dorothyCard));
+		assertTrue(testSuggestion.getWeapon().equals(magnumCard));
 	}
 
 	@Test
-	public void createSuggestion()
+	public void selectTargets()
 	{
-		//test if no rooms in list, select randomly
-		//test if room in list that has not been seen, select it
-		//test if room in list that has been seen, each target (including room) selected randomly
+		Set<Card> testDeck = board.getDeck();
+		ComputerPlayer testComputer = new ComputerPlayer("Computer", ' ', 8, 19, testDeck);
+		
+		BoardCell testTarget;
 
+		//test if no rooms in list, select randomly
+		int up = 0;
+		int down = 0;
+		int left = 0;
+		int right = 0;
+		int other = 0;
+		int count = 0;
+		while (count < 100)
+		{
+			testTarget = testComputer.selectTarget(board, 1);
+			if (testTarget.getRow() == 7 && testTarget.getCol() == 19)
+			{
+				up++;
+			}
+			else if (testTarget.getRow() == 9 && testTarget.getCol() == 19)
+			{
+				down++;
+			}
+			else if (testTarget.getRow() == 8 && testTarget.getCol() == 18)
+			{
+				left++;
+			}
+
+			else if (testTarget.getRow() == 8 && testTarget.getCol() == 20)
+			{
+				right++;
+			}
+			else
+			{
+				other++;
+			}
+			count++;
+		}
+		assertTrue(up > 0);
+		assertTrue(down > 0);
+		assertTrue(left > 0);
+		assertTrue(right > 0);
+		assertTrue(other == 0);
+
+		
+		testComputer.setRow(6);
+		testComputer.setColumn(18);
+		//test if room in list that has not been seen, select it
+		testDeck.clear();
+		testDeck.add(garageCard);
+		testComputer.setUnseen(testDeck);
+		testTarget = testComputer.selectTarget(board, 1);
+		assertTrue(board.getRoom(testTarget).getName().equals(garageCard.getName()));
+		
+		//test if room in list that has been seen, each target (including room) selected randomly
+		testDeck.clear();
+		testComputer.setUnseen(testDeck);
+		testComputer.updateSeen(garageCard);
+		
+		up = 0;
+		down = 0;
+		left = 0;
+		right = 0;
+		other = 0;
+		count = 0;
+		while (count < 100)
+		{
+			testTarget = testComputer.selectTarget(board, 1);
+			if (testTarget.getRow() == 2 && testTarget.getCol() == 20)
+			{
+				up++;
+			}
+			else if (testTarget.getRow() == 7 && testTarget.getCol() == 18)
+			{
+				down++;
+			}
+			else if (testTarget.getRow() == 6 && testTarget.getCol() == 17)
+			{
+				left++;
+			}
+
+			else if (testTarget.getRow() == 6 && testTarget.getCol() == 19)
+			{
+				right++;
+			}
+			else
+			{
+				other++;
+			}
+			count++;
+		}
+		assertTrue(up > 0);
+		assertTrue(down > 0);
+		assertTrue(left > 0);
+		assertTrue(right > 0);
+		assertTrue(other == 0);
 	}
 	
 }

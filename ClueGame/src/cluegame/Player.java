@@ -18,6 +18,7 @@ public class Player
 	protected Player(String name, char c, Boolean isHuman, int row, int column)
 	{
 		this.hand = new HashSet<>();
+		this.seen = new HashSet<>();
 		this.name = name;
 		this.isHuman = isHuman;
 		this.row = row;
@@ -90,6 +91,7 @@ public class Player
 	public void updateHand(Card card)
 	{
 		hand.add(card);
+		updateSeen(card);
 	}
 	
 	public void updateSeen(Card seenCard)
@@ -98,9 +100,19 @@ public class Player
 	}
 	
 	public Set<Card> getHand() { return hand; }
+	public Set<Card> getSeen() { return seen; }
 	public String getName() { return name; }
 	public Color getColor() { return color; }
 	public Boolean isHuman() { return isHuman; }
+	
+	public void setRow(int row)
+	{
+		this.row = row;
+	}
+	public void setColumn(int column)
+	{
+		this.column = column;
+	}
 	
 
 	//testing methods

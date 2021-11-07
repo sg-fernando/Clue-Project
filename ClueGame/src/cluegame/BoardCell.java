@@ -18,7 +18,7 @@ public class BoardCell
 
 	private char secretPassage;
 	private char initial;
-	
+
 	private DoorDirection doorDirection = DoorDirection.NONE;
 	
 	public BoardCell(int row, int col,char initial)

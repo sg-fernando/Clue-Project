@@ -18,13 +18,15 @@ public class ComputerPlayer extends Player
 	public void updateHand(Card card)
 	{
 		super.updateHand(card);
-		removeUnseen(card);
+		updateUnseen(card);
+		
 	}
 	
-	private void removeUnseen(Card card)
+	public void updateUnseen(Card card)
 	{
 		unseen.remove(card);
 	}
+	
 	
 	private int countType(CardType type)
 	{
@@ -82,19 +84,27 @@ public class ComputerPlayer extends Player
 	}
 	public BoardCell selectTarget(Board board, int roll)
 	{
-		BoardCell cell = board.getCell(getRow(), getColumn());
-		Set<BoardCell> targets = board.calcTargets(cell, roll);
+		BoardCell target = null;
+		BoardCell currentCell = board.getCell(getRow(), getColumn());
+		Set<BoardCell> targets = board.calcTargets(currentCell, roll);
 		int rand = new Random().nextInt(targets.size());
 		int count = 0;
-		for (BoardCell c : targets)
+		for (BoardCell cell : targets)
 		{
+			for (Card card : unseen)
+			{
+				if (card.getType() == CardType.ROOM && card.getName().equals(board.getRoom(cell).getName()))
+				{
+					return cell;
+				}
+			}
 			if (count == rand)
 			{
-				return c;
+				target = cell;
 			}
 			count++;
 		}
-		return null;
+		return target;
 	}
 	
 	public void setUnseen(Set<Card> unseen)
