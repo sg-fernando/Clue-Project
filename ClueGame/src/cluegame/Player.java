@@ -43,6 +43,9 @@ public class Player
 		case 'y':
 			color = Color.YELLOW;
 			break;
+		case 'o':
+			color = Color.ORANGE;
+			break;
 		default:
 			color = Color.BLACK;
 			break;
