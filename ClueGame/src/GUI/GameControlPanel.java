@@ -1,7 +1,6 @@
 package GUI;
 
 import java.awt.GridLayout;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,10 +31,11 @@ public class GameControlPanel extends JPanel
 	private JPanel createUpper()
 	{
 		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(0,4));
 		
 		JPanel turnPanel = new JPanel();
 		JLabel turnLabel = new JLabel("Whose turn?");
-		turnText = new JTextField(20);
+		turnText = new JTextField(15);
 		turnText.setEditable(false);
 		turnPanel.add(turnLabel);
 		turnPanel.add(turnText);
@@ -62,21 +62,24 @@ public class GameControlPanel extends JPanel
 	private JPanel createLower()
 	{
 		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(0,2));
 		
 		JPanel guessPanel = new JPanel();
-		guessText = new JTextField(20);
+		guessPanel.setLayout(new GridLayout(1,0));
+		guessText = new JTextField();
 		guessText.setEditable(false);
 		guessPanel.setBorder(new TitledBorder (new EtchedBorder(), "Guess"));
 		guessPanel.add(guessText);
 		
-		JPanel resultPanel = new JPanel();
-		guessResultText = new JTextField(20);
+		JPanel guessResultPanel = new JPanel();
+		guessResultPanel.setLayout(new GridLayout(1,0));
+		guessResultText = new JTextField();
 		guessResultText.setEditable(false);
-		resultPanel.setBorder(new TitledBorder (new EtchedBorder(), "Guess Result"));
-		resultPanel.add(guessResultText);
+		guessResultPanel.setBorder(new TitledBorder (new EtchedBorder(), "Guess Result"));
+		guessResultPanel.add(guessResultText);
 		
 		panel.add(guessPanel);
-		panel.add(resultPanel);
+		panel.add(guessResultPanel);
 		return panel;
 	}
 	
