@@ -10,9 +10,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import cluegame.Card;
-import cluegame.CardType;
 import cluegame.ComputerPlayer;
-import cluegame.Player;
 
 public class GameCardsPanel extends JPanel
 {
@@ -24,138 +22,106 @@ public class GameCardsPanel extends JPanel
 //	private JTextField handWeaponText;
 //	private JTextField seenWeaponText;
 	
+	private JPanel handPeoplePanel;
+	private JPanel handRoomsPanel;
+	private JPanel handWeaponsPanel;
+	
 	private JPanel seenPeoplePanel;
 	private JPanel seenRoomsPanel;
 	private JPanel seenWeaponsPanel;
 
-	public GameCardsPanel(Player player)
+	public GameCardsPanel()
 	{
 		setLayout(new GridLayout(3,0));
 		setBorder(new TitledBorder (new EtchedBorder(), "Known Cards"));
-		JPanel panel = createUpper(player);
+		JPanel panel = createUpper();
 		add(panel);
-		panel = createMid(player);
+		panel = createMid();
 		add(panel);
-		panel = createLower(player);
+		panel = createLower();
 		add(panel);
 	}
 	
-	private JPanel createUpper(Player player)
+	private JPanel createUpper()
 	{
-		JTextField handPersonText;
-		
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(2,0));
 		panel.setBorder(new TitledBorder (new EtchedBorder(), "People"));
 		
-		JPanel handPanel = new JPanel();
-		handPanel.setLayout(new GridLayout(0,1));
-		handPanel.setBorder(new TitledBorder (new EtchedBorder(), "In Hand:"));
-		for(Card it : player.getHand())
-		{
-			if(it.getType() == CardType.PLAYER)
-			{
-				handPersonText = new JTextField(15);
-				handPersonText.setEditable(false);
-				handPersonText.setText(it.getName());
-				handPanel.add(handPersonText);
-			}
-		}
+		handPeoplePanel = new JPanel();
+		handPeoplePanel.setLayout(new GridLayout(0,1));
+		handPeoplePanel.setBorder(new TitledBorder (new EtchedBorder(), "In Hand:"));
 		
 		seenPeoplePanel = new JPanel();
 		seenPeoplePanel.setLayout(new GridLayout(0,1));
 		seenPeoplePanel.setBorder(new TitledBorder (new EtchedBorder(), "Seen:"));
-		for(Card it : player.getSeen())
-		{
-			if(it.getType() == CardType.PLAYER)
-			{
-				updateSeen(it);
-			}
-		}
 		
-		panel.add(handPanel);
+		panel.add(handPeoplePanel);
 		panel.add(seenPeoplePanel);
 		
 		return panel;
 	}
 	
-	private JPanel createMid(Player player)
+	private JPanel createMid()
 	{
-		JTextField handRoomText;
-
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(2,0));
 		panel.setBorder(new TitledBorder (new EtchedBorder(), "Rooms"));
 		
-		JPanel handPanel = new JPanel();
-		handPanel.setLayout(new GridLayout(0,1));
-		handPanel.setBorder(new TitledBorder (new EtchedBorder(), "In Hand:"));
-		for(Card it : player.getHand())
-		{
-			if(it.getType() == CardType.ROOM)
-			{
-				handRoomText = new JTextField(15);
-				handRoomText.setEditable(false);
-				handRoomText.setText(it.getName());
-				handPanel.add(handRoomText);
-			}
-		}
+		handRoomsPanel = new JPanel();
+		handRoomsPanel.setLayout(new GridLayout(0,1));
+		handRoomsPanel.setBorder(new TitledBorder (new EtchedBorder(), "In Hand:"));
 		
 		seenRoomsPanel = new JPanel();
 		seenRoomsPanel.setLayout(new GridLayout(0,1));
 		seenRoomsPanel.setBorder(new TitledBorder (new EtchedBorder(), "Seen:"));
-		for(Card it : player.getSeen())
-		{
-			if(it.getType() == CardType.ROOM)
-			{
-				updateSeen(it);
-			}
-		}
 		
-		panel.add(handPanel);
+		panel.add(handRoomsPanel);
 		panel.add(seenRoomsPanel);
 		
 		return panel;
 	}
-	private JPanel createLower(Player player)
+	private JPanel createLower()
 	{
-		JTextField handWeaponText;
-		
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(0,1));
 		panel.setBorder(new TitledBorder (new EtchedBorder(), "Weapons"));
 		
-		JPanel handPanel = new JPanel();
-		handPanel.setLayout(new GridLayout(0,1));
-		handPanel.setBorder(new TitledBorder (new EtchedBorder(), "In Hand:"));
-		for(Card it : player.getHand())
-		{
-			if(it.getType() == CardType.WEAPON)
-			{
-				handWeaponText = new JTextField(15);
-				handWeaponText.setEditable(false);
-				handWeaponText.setText(it.getName());
-				handPanel.add(handWeaponText);
-			}
-		}
+		handWeaponsPanel = new JPanel();
+		handWeaponsPanel.setLayout(new GridLayout(0,1));
+		handWeaponsPanel.setBorder(new TitledBorder (new EtchedBorder(), "In Hand:"));
 		
 		seenWeaponsPanel = new JPanel();
 		seenWeaponsPanel.setLayout(new GridLayout(0,1));
 		seenWeaponsPanel.setBorder(new TitledBorder (new EtchedBorder(), "Seen:"));
-		for(Card it : player.getSeen())
-		{
-			if(it.getType() == CardType.WEAPON)
-			{
-				updateSeen(it);
-			}
-		}
 		
-		panel.add(handPanel);
+		panel.add(handWeaponsPanel);
 		panel.add(seenWeaponsPanel);
 		
 		return panel;
 	}
 	
+	public void updateHand(Card card)
+	{
+		JTextField text = new JTextField(15);
+		text.setEditable(false);
+		text.setText(card.getName());
+		
+		switch (card.getType())
+		{
+		case PLAYER:
+			handPeoplePanel.add(text);
+			break;
+		case ROOM:
+			handRoomsPanel.add(text);
+			break;
+		case WEAPON:
+			handWeaponsPanel.add(text);
+			break;
+		default:
+			break;
+		}
+	}
 	
 	public void updateSeen(Card card)
 	{
@@ -219,7 +185,17 @@ public class GameCardsPanel extends JPanel
 		seen.add(magnumCard);
 		cpu.setSeen(seen);
 		
-		GameCardsPanel panel = new GameCardsPanel(cpu);  // create the panel
+		GameCardsPanel panel = new GameCardsPanel();  // create the panel
+		
+		for (Card card : cpu.getSeen())
+		{
+			panel.updateSeen(card);
+		}
+		for (Card card : cpu.getHand())
+		{
+			panel.updateHand(card);
+		}
+		
 		
 		JFrame frame = new JFrame();  // create the frame 
 		frame.setContentPane(panel); // put the panel in the frame
