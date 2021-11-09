@@ -122,6 +122,11 @@ public class Player
 	{
 		this.hand = hand;
 	}
+	
+	public void setSeen(Set<Card> seen)
+	{
+		this.seen = seen;
+	}
 
 	public int getRow() {
 		return row;
