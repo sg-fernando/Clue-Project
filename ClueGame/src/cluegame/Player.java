@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.awt.Graphics;
 
 public class Player
 {
@@ -15,7 +16,7 @@ public class Player
 	private Set<Card> hand;
 	private Set<Card> seen;
 	
-	protected Player(String name, char c, Boolean isHuman, int row, int column)
+	protected Player(String name, char c, Boolean isHuman, int column, int row)
 	{
 		this.hand = new HashSet<>();
 		this.seen = new HashSet<>();
@@ -50,6 +51,14 @@ public class Player
 			color = Color.BLACK;
 			break;
 		}
+	}
+	
+	public void draw(int width, int height, Graphics g)
+	{
+		int x = width * row;
+		int y = height * column;
+		g.setColor(color);
+		g.fillOval(x, y, width, height);
 	}
 	
 	public Card disproveSuggestion(Solution suggestion)

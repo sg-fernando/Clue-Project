@@ -12,12 +12,12 @@ Room, Front Yard, Y
 Space, Unused, X
 Space, Walkway, Z
 //players
-Player, Miles, g, Human, 0,0
-Player, Dorothy, p, Computer, 0,0
-Player, Blanche, r, Computer, 0,0
-Player, Rose, w, Computer, 0,0
-Player, Sophia, b, Computer, 0,0
-Player, Stan, y, Computer, 0,0
+Player, Miles, g, Human, 0,17
+Player, Dorothy, p, Computer, 0,9
+Player, Blanche, r, Computer, 6,1
+Player, Rose, w, Computer, 13,0
+Player, Sophia, b, Computer, 24,8
+Player, Stan, y, Computer, 24,16
 //weapons
 Weapon, Bathrobe
 Weapon, Magnum Research Micro Desert Eagle

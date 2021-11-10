@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 
 public class Board extends JPanel
 {
+	private static final long serialVersionUID = 1L;
 	private BoardCell[][] grid;
 	private Set<BoardCell> targets;
 	private Set<BoardCell> visited;
@@ -90,6 +91,11 @@ public class Board extends JPanel
 			}
 			xOffset = 0;
 			yOffset += height;
+		}
+		
+		for (Player player : players)
+		{
+			player.draw(width, height, g);
 		}
 	}
 

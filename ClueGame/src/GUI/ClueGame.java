@@ -7,6 +7,7 @@ import cluegame.Board;
 
 public class ClueGame extends JFrame
 {
+	private static final long serialVersionUID = 1L;
 	private static ClueGame frame = new ClueGame();
 
 	private ClueGame()
@@ -24,8 +25,6 @@ public class ClueGame extends JFrame
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("Clue Game");
 		frame.setSize(1000, 900);
-//		frame.setLayout(new GridBagLayout());
-//		GridBagConstraints c = new GridBagConstraints();
 		
 		Board board = Board.getInstance();
 		board.setConfigFiles("data/ClueLayout.csv", "data/ClueSetup.txt");

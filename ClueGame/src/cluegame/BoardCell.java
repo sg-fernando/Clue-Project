@@ -39,7 +39,7 @@ public class BoardCell
 		
 		if (room.getName().equals(Board.WALKWAY))
 		{
-			g.setColor(Color.YELLOW);
+			g.setColor(Color.YELLOW.darker().darker());
 			g.fillRect(xOffset, yOffset, width, height);
 			g.setColor(Color.BLACK);
 			g.drawRect(xOffset, yOffset, width, height);
