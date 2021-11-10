@@ -1,8 +1,6 @@
 package GUI;
 
 import java.awt.BorderLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import cluegame.Board;
@@ -25,7 +23,7 @@ public class ClueGame extends JFrame
 	{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("Clue Game");
-		frame.setSize(1000, 800);
+		frame.setSize(1000, 900);
 //		frame.setLayout(new GridBagLayout());
 //		GridBagConstraints c = new GridBagConstraints();
 		

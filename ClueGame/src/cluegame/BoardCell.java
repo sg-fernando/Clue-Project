@@ -50,6 +50,17 @@ public class BoardCell
 			g.fillRect(xOffset, yOffset, width, height);
 
 		}
+		else if (Boolean.TRUE.equals(isLabel))
+		{
+			g.setColor(Color.BLACK);
+			String[] name = room.getName().split(" ");
+			int tempY = yOffset;
+			for (String word : name)
+			{
+				g.drawString(word, xOffset, tempY);
+				tempY += height/2;
+			}
+		}
 		
 		int doorHeight = height/4;
 		int doorWidth = width/4;
