@@ -1,6 +1,8 @@
 package cluegame;
 
 import java.util.HashSet;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.Set;
 
 public class BoardCell
@@ -26,6 +28,51 @@ public class BoardCell
 		this.row = row;
 		this.col = col;
 		this.initial = initial;
+	}
+	
+	public void draw(int width, int height, int xOffset, int yOffset, Graphics g, Room room)
+	{
+//		g.setColor(Color.YELLOW);
+//		g.fillRect(xOffset, yOffset, width, height);
+//		g.setColor(Color.BLACK);
+//		g.drawRect(xOffset, yOffset, width, height);
+		
+		if (room.getName().equals(Board.WALKWAY))
+		{
+			g.setColor(Color.YELLOW);
+			g.fillRect(xOffset, yOffset, width, height);
+			g.setColor(Color.BLACK);
+			g.drawRect(xOffset, yOffset, width, height);
+		}
+		else if (room.getName().equals(Board.UNUSED))
+		{
+			g.setColor(Color.BLACK);
+			g.fillRect(xOffset, yOffset, width, height);
+
+		}
+		
+		int doorHeight = height/4;
+		int doorWidth = width/4;
+		g.setColor(Color.BLUE);
+		switch (doorDirection)
+		{
+		case NONE:
+			break;
+		case UP:
+			g.fillRect(xOffset, yOffset, width, doorHeight);
+			break;
+		case DOWN:
+			g.fillRect(xOffset, yOffset+height-doorHeight, width, doorHeight);
+			break;
+		case LEFT:
+			g.fillRect(xOffset, yOffset, doorWidth, height);
+			break;
+		case RIGHT:
+			g.fillRect(xOffset+width-doorWidth, yOffset, doorWidth, height);
+			break;
+		default:
+			break;
+        }
 	}
 	
 	public char getInitial() { return this.initial; }

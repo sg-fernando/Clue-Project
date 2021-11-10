@@ -2,6 +2,7 @@ package cluegame;
 
 
 import java.io.BufferedReader;
+import java.awt.Color;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,8 +12,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.awt.Graphics;
+import javax.swing.JPanel;
 
-public class Board
+public class Board extends JPanel
 {
 	private BoardCell[][] grid;
 	private Set<BoardCell> targets;
@@ -29,7 +32,8 @@ public class Board
 	
 	private Solution solution;
 	
-	private static final String WALKWAY = "Walkway";
+	public static final String WALKWAY = "Walkway";
+	public static final String UNUSED = "Unused";
 	
 	//singleton design pattern
 	private static Board theInstance = new Board();
@@ -63,6 +67,30 @@ public class Board
     	buildBoard(list);
     	//build adjacency list for all cells
     	buildAdjLists();
+	}
+	
+	@Override
+	public void paintComponent(Graphics g)
+	{
+		super.paintComponent(g);
+		g.setColor(Color.DARK_GRAY.brighter().brighter().brighter());
+		g.fillRect(0, 0, getWidth(), getHeight());
+		
+		int xOffset = 0;
+		int yOffset = 0;
+		int width = getWidth()/numColumns;
+		int height = getHeight()/numRows;
+		
+		for (BoardCell[] row : grid)
+		{
+			for (BoardCell cell : row)
+			{
+				cell.draw(width, height, xOffset, yOffset, g, getRoom(cell));
+				xOffset += width;
+			}
+			xOffset = 0;
+			yOffset += height;
+		}
 	}
 
 	public Card handleSuggestion(Solution suggestion, Player player)

@@ -1,16 +1,10 @@
 package GUI;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
-
-import javax.swing.JButton;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.TitledBorder;
-
 import cluegame.Board;
 
 public class ClueGame extends JFrame
@@ -31,13 +25,21 @@ public class ClueGame extends JFrame
 	{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("Clue Game");
-		frame.setSize(1000, 800);	
-		// Create the JPanel and add it to the JFrame
-		JPanel controlPanel = new GameControlPanel();
-		frame.add(controlPanel);
+		frame.setSize(1000, 800);
+//		frame.setLayout(new GridBagLayout());
+//		GridBagConstraints c = new GridBagConstraints();
+		
+		Board board = Board.getInstance();
+		board.setConfigFiles("data/ClueLayout.csv", "data/ClueSetup.txt");
+		board.initialize();
+		frame.add(board, BorderLayout.CENTER);
+		
 		JPanel cardsPanel = new GameCardsPanel();
-		frame.add(cardsPanel);
-		// Now let's view it
+		frame.add(cardsPanel, BorderLayout.EAST);
+		
+		JPanel controlPanel = new GameControlPanel();
+		frame.add(controlPanel, BorderLayout.SOUTH);
+		
 		frame.setVisible(true);
 	}
 
