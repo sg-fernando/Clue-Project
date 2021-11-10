@@ -17,7 +17,7 @@ Player, Dorothy, p, Computer, 0,9
 Player, Blanche, r, Computer, 6,1
 Player, Rose, w, Computer, 13,0
 Player, Sophia, b, Computer, 24,8
-Player, Stan, y, Computer, 24,16
+Player, Stan, o, Computer, 24,16
 //weapons
 Weapon, Bathrobe
 Weapon, Magnum Research Micro Desert Eagle

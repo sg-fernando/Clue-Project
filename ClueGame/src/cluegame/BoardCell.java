@@ -39,7 +39,7 @@ public class BoardCell
 		
 		if (room.getName().equals(Board.WALKWAY))
 		{
-			g.setColor(Color.YELLOW.darker().darker());
+			g.setColor(Color.YELLOW.darker());
 			g.fillRect(xOffset, yOffset, width, height);
 			g.setColor(Color.BLACK);
 			g.drawRect(xOffset, yOffset, width, height);
@@ -52,7 +52,7 @@ public class BoardCell
 		}
 		else if (Boolean.TRUE.equals(isLabel))
 		{
-			g.setColor(Color.BLACK);
+			g.setColor(Color.BLUE);
 			String[] name = room.getName().split(" ");
 			int tempY = yOffset;
 			for (String word : name)
@@ -70,16 +70,16 @@ public class BoardCell
 		case NONE:
 			break;
 		case UP:
-			g.fillRect(xOffset, yOffset, width, doorHeight);
+			g.fillRect(xOffset, yOffset-doorHeight, width, doorHeight);
 			break;
 		case DOWN:
-			g.fillRect(xOffset, yOffset+height-doorHeight, width, doorHeight);
+			g.fillRect(xOffset, yOffset+height, width, doorHeight);
 			break;
 		case LEFT:
-			g.fillRect(xOffset, yOffset, doorWidth, height);
+			g.fillRect(xOffset-doorWidth, yOffset, doorWidth, height);
 			break;
 		case RIGHT:
-			g.fillRect(xOffset+width-doorWidth, yOffset, doorWidth, height);
+			g.fillRect(xOffset+width, yOffset, doorWidth, height);
 			break;
 		default:
 			break;

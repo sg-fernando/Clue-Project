@@ -459,6 +459,17 @@ public class Board extends JPanel
 	public Set<Card> getDeck() { return deck; }
 	public Solution getSolution() { return solution; }
 	public Set<Player> getPlayers() { return players; }
+	public Player getHuman()
+	{
+		for (Player player : players)
+		{
+			if (Boolean.TRUE.equals(player.isHuman()))
+			{
+				return player;
+			}
+		}
+		return null;
+	}
 	
 	// testing; set up known solution values for comparison
 	public void setSolution(Solution sol) {

@@ -59,6 +59,8 @@ public class Player
 		int y = height * column;
 		g.setColor(color);
 		g.fillOval(x, y, width, height);
+		g.setColor(Color.BLACK);
+		g.drawOval(x, y, width, height);
 	}
 	
 	public Card disproveSuggestion(Solution suggestion)

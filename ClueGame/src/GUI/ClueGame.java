@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import cluegame.Board;
+import cluegame.Card;
 
 public class ClueGame extends JFrame
 {
@@ -31,10 +32,14 @@ public class ClueGame extends JFrame
 		board.initialize();
 		frame.add(board, BorderLayout.CENTER);
 		
-		JPanel cardsPanel = new GameCardsPanel();
+		GameCardsPanel cardsPanel = new GameCardsPanel();
+		for (Card card : board.getHuman().getHand())
+		{
+			cardsPanel.updateHand(card);
+		}
 		frame.add(cardsPanel, BorderLayout.EAST);
 		
-		JPanel controlPanel = new GameControlPanel();
+		GameControlPanel controlPanel = new GameControlPanel();
 		frame.add(controlPanel, BorderLayout.SOUTH);
 		
 		frame.setVisible(true);
