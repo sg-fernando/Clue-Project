@@ -14,14 +14,7 @@ import cluegame.ComputerPlayer;
 
 public class GameCardsPanel extends JPanel
 {
-	
-//	private JTextField handPersonText;
-//	private JTextField seenPersonText;
-//	private JTextField handRoomText;
-//	private JTextField seenRoomText;
-//	private JTextField handWeaponText;
-//	private JTextField seenWeaponText;
-	
+	private static final long serialVersionUID = 1L;
 	private JPanel handPeoplePanel;
 	private JPanel handRoomsPanel;
 	private JPanel handWeaponsPanel;

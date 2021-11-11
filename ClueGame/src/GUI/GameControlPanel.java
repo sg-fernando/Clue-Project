@@ -13,12 +13,12 @@ import cluegame.ComputerPlayer;
 
 public class GameControlPanel extends JPanel
 {
-
+	private static final long serialVersionUID = 1L;
 	private JTextField turnText;
 	private JTextField rollText;
 	private JTextField guessText;
 	private JTextField guessResultText;
-
+	
 	public GameControlPanel()
 	{
 		setLayout(new GridLayout(2,0));
