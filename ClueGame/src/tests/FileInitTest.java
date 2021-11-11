@@ -86,7 +86,7 @@ public class FileInitTest {
 				if (cell.isDoorway())
 					numDoors++;
 			}
-		Assert.assertEquals(10, numDoors);
+		Assert.assertEquals(12, numDoors);
 	}
 
 	// Test a few room cells to ensure the room initial is correct.

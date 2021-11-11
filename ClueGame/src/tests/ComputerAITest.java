@@ -42,7 +42,7 @@ public class ComputerAITest
 	public void createSuggestion()
 	{
 		Set<Card> testDeck = board.getDeck();
-		ComputerPlayer testComputer = new ComputerPlayer("Computer", ' ', 2, 20, testDeck);
+		ComputerPlayer testComputer = new ComputerPlayer("Computer", ' ', 20, 2, testDeck);
 		
 		Solution testSuggestion = testComputer.createSuggestion(board);
 		//test room matches current location
@@ -139,7 +139,7 @@ public class ComputerAITest
 	public void selectTargets()
 	{
 		Set<Card> testDeck = board.getDeck();
-		ComputerPlayer testComputer = new ComputerPlayer("Computer", ' ', 8, 19, testDeck);
+		ComputerPlayer testComputer = new ComputerPlayer("Computer", ' ', 19, 8, testDeck);
 		
 		BoardCell testTarget;
 

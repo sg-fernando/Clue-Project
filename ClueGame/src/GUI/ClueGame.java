@@ -40,7 +40,6 @@ public class ClueGame extends JFrame
 		cardsPanel.setPreferredSize(new Dimension(frame.getWidth()/5,0));
 		for (Card card : humanPlayer.getHand())
 		{
-			System.out.println(card.getName());
 			cardsPanel.updateHand(card);
 		}
 		
@@ -57,7 +56,6 @@ public class ClueGame extends JFrame
 	
 	public static void main(String[] args)
 	{
-		// Create a JFrame with all the normal functionality
 		ClueGame frame = ClueGame.getInstance();
 		frame.initialize();
 	}
