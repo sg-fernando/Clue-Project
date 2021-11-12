@@ -3,6 +3,10 @@ package GUI;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+
 import cluegame.Board;
 import cluegame.Card;
 import cluegame.HumanPlayer;
@@ -52,12 +56,20 @@ public class ClueGame extends JFrame
 		
 		frame.setVisible(true);
 	}
+	
+	public void splashScreen()
+	{
+		JLabel label = new JLabel("<html><center>You are "+ humanPlayer.getName()+"<br>Can you find the solution<br>before the Computer players?");
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		JOptionPane.showMessageDialog(frame, label, "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
 
+	}
 	
 	public static void main(String[] args)
 	{
 		ClueGame frame = ClueGame.getInstance();
 		frame.initialize();
+		frame.splashScreen();
 	}
 
 
