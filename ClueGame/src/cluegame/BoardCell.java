@@ -15,7 +15,7 @@ public class BoardCell
 	private Boolean isLabel = false;
 	private Boolean isDoorway = false;
 	private Boolean isSecretPassage = false;
-	 
+	
 	private Set<BoardCell> adjList = new HashSet<>();
 
 	private char secretPassage;
@@ -32,12 +32,14 @@ public class BoardCell
 	
 	public void draw(int width, int height, int xOffset, int yOffset, Graphics g, Room room)
 	{
-//		g.setColor(Color.YELLOW);
-//		g.fillRect(xOffset, yOffset, width, height);
-//		g.setColor(Color.BLACK);
-//		g.drawRect(xOffset, yOffset, width, height);
-		
-		if (room.getName().equals(Board.WALKWAY))
+		if (Boolean.TRUE.equals(Board.getInstance().isTarget(this)) && Boolean.TRUE.equals(Board.getInstance().isUnfinishedTurn()))
+		{
+			g.setColor(Color.CYAN);
+			g.fillRect(xOffset, yOffset, width, height);
+			g.setColor(Color.BLACK);
+			g.drawRect(xOffset, yOffset, width, height);
+		}
+		else if (room.getName().equals(Board.WALKWAY))
 		{
 			g.setColor(Color.YELLOW.darker());
 			g.fillRect(xOffset, yOffset, width, height);
@@ -48,7 +50,6 @@ public class BoardCell
 		{
 			g.setColor(Color.BLACK);
 			g.fillRect(xOffset, yOffset, width, height);
-
 		}
 		else if (Boolean.TRUE.equals(isLabel))
 		{
@@ -135,5 +136,10 @@ public class BoardCell
 	public void setDoorDirection(DoorDirection doorDirection)
 	{
 		this.doorDirection = doorDirection;
+	}
+	
+	public Boolean equals(BoardCell other)
+	{
+		return (other.getRow() == this.row && other.getCol() == this.col);
 	}
 }

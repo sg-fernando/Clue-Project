@@ -7,11 +7,13 @@ public class ComputerPlayer extends Player
 {
 
 	private Set<Card> unseen;
+	private Board board;
 	
 	public ComputerPlayer(String name, char color, int row, int column, Set<Card> unseen)
 	{
 		super(name, color, false, row, column);
 		this.unseen = unseen;
+		board = Board.getInstance();
 	}
 	
 	@Override
@@ -40,8 +42,8 @@ public class ComputerPlayer extends Player
 		}
 		return count;
 	}
-	
-	public Solution createSuggestion(Board board)
+
+	public Solution createSuggestion()
 	{
 		int player = 0;
 		int weapon = 0;
@@ -82,11 +84,12 @@ public class ComputerPlayer extends Player
 		
 		return solution;
 	}
-	public BoardCell selectTarget(Board board, int roll)
+	public BoardCell selectTarget()
 	{
 		BoardCell target = null;
 		BoardCell currentCell = board.getCell(getRow(), getColumn());
-		Set<BoardCell> targets = board.calcTargets(currentCell, roll);
+		Set<BoardCell> targets = board.calcTargets(currentCell, board.getRoll());
+		//board.clearTargets();
 		int rand = new Random().nextInt(targets.size());
 		int count = 0;
 		for (BoardCell cell : targets)
@@ -104,6 +107,7 @@ public class ComputerPlayer extends Player
 			}
 			count++;
 		}
+		newPosition(target);
 		return target;
 	}
 	

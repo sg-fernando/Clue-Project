@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -31,8 +33,14 @@ public class Board extends JPanel
 	private Set<Card> deck;
 	private Set<Player> players;
 	
+	private Player currentPlayer;
+	
+	private Boolean unfinished = false;
+	
 	private Solution solution;
 	
+	private int roll;
+
 	public static final String WALKWAY = "Walkway";
 	public static final String UNUSED = "Unused";
 	
@@ -68,6 +76,8 @@ public class Board extends JPanel
     	buildBoard(list);
     	//build adjacency list for all cells
     	buildAdjLists();
+    	
+    	targets = new HashSet<>();
 	}
 	
 	@Override
@@ -365,7 +375,7 @@ public class Board extends JPanel
 	{
 		roomMap = new HashMap<>();
 		deck = new HashSet<>();
-		players = new HashSet<>();
+		players = new LinkedHashSet<>();
 		try ( BufferedReader reader = new BufferedReader(new FileReader(this.setupConfigFile)) )
 		{
 			String line;
@@ -393,6 +403,7 @@ public class Board extends JPanel
 					if (row[3].equals("Human"))
 					{
 						player = new HumanPlayer(row[1], row[2].charAt(0),rowPos,colPos);
+						currentPlayer = player;
 					}
 					else
 					{
@@ -455,6 +466,43 @@ public class Board extends JPanel
 	public BoardCell getCell(int row, int col) { return grid[row][col]; }
 	
 	public Set<BoardCell> getAdjList(int row, int col) { return getCell(row,col).getAdjList(); }
+
+	public Boolean isUnfinishedTurn() { return unfinished; }
+	public void setUnfinished(Boolean unfinished)
+	{
+		this.unfinished = unfinished;
+	}
+	
+	public int getRoll() { return roll; }
+	public void roll()
+	{
+		roll = new Random().nextInt(6);
+		roll++;
+	}
+	
+	public Player getCurrentPlayer() { return currentPlayer; }
+	public void updateCurrentPlayer()
+	{
+		Boolean setNext = false;
+		for (Player player : players)
+		{
+			if (Boolean.TRUE.equals(setNext))
+			{
+				currentPlayer = player;
+				setNext = false;
+				break;
+			}
+			if (Boolean.TRUE.equals(player.equals(currentPlayer)))
+			{
+				setNext = true;
+			}
+		}
+		if (Boolean.TRUE.equals(setNext))
+		{
+			Iterator<Player> itr = players.iterator();
+			currentPlayer = itr.next();
+		}
+	}
 	
 	public Set<Card> getDeck() { return deck; }
 	public Solution getSolution() { return solution; }
@@ -471,7 +519,26 @@ public class Board extends JPanel
 		return null;
 	}
 	
+	public void clearTargets()
+	{
+		targets.clear();
+	}
+	
+	public Boolean isTarget(BoardCell cell) {
+		for (BoardCell target : targets)
+		{
+			if (Boolean.TRUE.equals(target.equals(cell)))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 	// testing; set up known solution values for comparison
+	public void setRoll(int roll)
+	{
+		this.roll = roll;
+	}
 	public void setSolution(Solution sol) {
 		this.solution = sol;
 	}
@@ -480,8 +547,7 @@ public class Board extends JPanel
 	}
 	
 	public boolean checkAccusation(Solution S) {
-		if(this.getSolution().equals(S)) {
-			return true;
-		} else return false;
+		return this.getSolution().equals(S);
 	}
+
 }

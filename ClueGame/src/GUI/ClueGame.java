@@ -7,22 +7,73 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import cluegame.Board;
+import cluegame.BoardCell;
 import cluegame.Card;
 import cluegame.HumanPlayer;
 
 public class ClueGame extends JFrame
 {
 	private static final long serialVersionUID = 1L;
+
 	private static ClueGame frame = new ClueGame();
 	
 	private HumanPlayer humanPlayer;
+
+	private class Mouse implements MouseListener
+	{
+
+		@Override
+		public void mouseClicked(MouseEvent e)
+		{
+			if (Boolean.FALSE.equals(Board.getInstance().isUnfinishedTurn()))
+			{
+				return;
+			}
+			BoardCell cell;
+			int column = e.getX()/(Board.getInstance().getWidth()/Board.getInstance().getNumColumns());
+			int row = e.getY()/(Board.getInstance().getHeight()/Board.getInstance().getNumRows());
+			cell = new BoardCell(row, column, ' ');
+			System.out.println("CLICK row " + row + " col " + column);
+			if (Boolean.FALSE.equals(Board.getInstance().isTarget(cell)))
+			{
+				JOptionPane.showMessageDialog(frame, "That is not a target", "Message", JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+			humanPlayer.newPosition(cell);
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+//			System.out.println("mouse pressed");
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+//			System.out.println("mouse released");
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+//			System.out.println("mouse entered");
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+//			System.out.println("mouse exited");
+		}
+
+	}
 
 	private ClueGame()
 	{
 		super();
 	}
-	
+
 	public static ClueGame getInstance()
     {
 		return frame;
@@ -34,6 +85,8 @@ public class ClueGame extends JFrame
 		board.setConfigFiles("data/ClueLayout.csv", "data/ClueSetup.txt");
 		board.initialize();
 		board.deal();
+		Mouse m = new Mouse();
+		board.addMouseListener(m);
 		humanPlayer = board.getHuman();
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -62,7 +115,6 @@ public class ClueGame extends JFrame
 		JLabel label = new JLabel("<html><center>You are "+ humanPlayer.getName()+"<br>Can you find the solution<br>before the Computer players?");
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		JOptionPane.showMessageDialog(frame, label, "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
-
 	}
 	
 	public static void main(String[] args)

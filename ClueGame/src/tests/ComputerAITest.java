@@ -44,7 +44,7 @@ public class ComputerAITest
 		Set<Card> testDeck = board.getDeck();
 		ComputerPlayer testComputer = new ComputerPlayer("Computer", ' ', 20, 2, testDeck);
 		
-		Solution testSuggestion = testComputer.createSuggestion(board);
+		Solution testSuggestion = testComputer.createSuggestion();
 		//test room matches current location
 		assertTrue(testSuggestion.getRoom().equals(garageCard));
 		
@@ -53,7 +53,7 @@ public class ComputerAITest
 		testDeck.add(milesCard);
 		
 		testComputer.setUnseen(testDeck);
-		testSuggestion = testComputer.createSuggestion(board);
+		testSuggestion = testComputer.createSuggestion();
 		//test if only one weapon not seen, it's selected
 		assertTrue(testSuggestion.getWeapon().equals(bathrobeCard));
 		//test if only one person not seen, it's selected
@@ -84,7 +84,7 @@ public class ComputerAITest
 		while (count < 100)
 		{
 			count++;
-			testSuggestion = testComputer.createSuggestion(board);
+			testSuggestion = testComputer.createSuggestion();
 			if (testSuggestion.getPerson().equals(milesCard))
 			{
 				milesCount++;
@@ -130,7 +130,7 @@ public class ComputerAITest
 		testComputer.setUnseen(testDeck);
 		testComputer.updateHand(milesCard);
 		testComputer.updateHand(bathrobeCard);
-		testSuggestion = testComputer.createSuggestion(board);
+		testSuggestion = testComputer.createSuggestion();
 		assertTrue(testSuggestion.getPerson().equals(dorothyCard));
 		assertTrue(testSuggestion.getWeapon().equals(magnumCard));
 	}
@@ -150,9 +150,10 @@ public class ComputerAITest
 		int right = 0;
 		int other = 0;
 		int count = 0;
+		board.setRoll(1);
 		while (count < 100)
 		{
-			testTarget = testComputer.selectTarget(board, 1);
+			testTarget = testComputer.selectTarget();
 			if (testTarget.getRow() == 7 && testTarget.getCol() == 19)
 			{
 				up++;
@@ -189,7 +190,7 @@ public class ComputerAITest
 		testDeck.clear();
 		testDeck.add(garageCard);
 		testComputer.setUnseen(testDeck);
-		testTarget = testComputer.selectTarget(board, 1);
+		testTarget = testComputer.selectTarget();
 		assertTrue(board.getRoom(testTarget).getName().equals(garageCard.getName()));
 		
 		//test if room in list that has been seen, each target (including room) selected randomly
@@ -205,7 +206,7 @@ public class ComputerAITest
 		count = 0;
 		while (count < 100)
 		{
-			testTarget = testComputer.selectTarget(board, 1);
+			testTarget = testComputer.selectTarget();
 			if (testTarget.getRow() == 2 && testTarget.getCol() == 20)
 			{
 				up++;

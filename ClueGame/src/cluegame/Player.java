@@ -16,7 +16,7 @@ public class Player
 	private Set<Card> hand;
 	private Set<Card> seen;
 	
-	protected Player(String name, char c, Boolean isHuman, int column, int row)
+	protected Player(String name, char c, Boolean isHuman, int row, int column)
 	{
 		this.hand = new HashSet<>();
 		this.seen = new HashSet<>();
@@ -55,12 +55,19 @@ public class Player
 	
 	public void draw(int width, int height, Graphics g)
 	{
-		int x = width * row;
-		int y = height * column;
+		int y = height * row;
+		int x = width * column;
 		g.setColor(color);
 		g.fillOval(x, y, width, height);
 		g.setColor(Color.BLACK);
 		g.drawOval(x, y, width, height);
+	}
+	public void newPosition(BoardCell cell)
+	{
+		Board.getInstance().getCell(getRow(), getColumn()).setOccupied(false);
+		setRow(cell.getRow());
+		setColumn(cell.getCol());
+		cell.setOccupied(true);
 	}
 	
 	public Card disproveSuggestion(Solution suggestion)
@@ -145,5 +152,10 @@ public class Player
 
 	public int getColumn() {
 		return column;
+	}
+	
+	public Boolean equals(Player other)
+	{
+		return (this.name.equals(other.getName()) && this.color == other.getColor() && this.isHuman == other.isHuman());
 	}
 }

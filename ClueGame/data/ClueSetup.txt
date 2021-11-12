@@ -9,7 +9,7 @@ Room, Kitchen, K
 Room, Blanche's Room, B
 Room, Front Yard, Y
 // other spaces
-Space, Unused, X
+Space, Unused, X	
 Space, Walkway, Z
 //players
 Player, Miles, g, Computer, 0,17
