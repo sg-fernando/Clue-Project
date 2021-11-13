@@ -74,7 +74,8 @@ public class GameControlPanel extends JPanel
 	
 	private void computerTurn()
 	{
-		((ComputerPlayer) board.getCurrentPlayer()).selectTarget();
+		BoardCell target = ((ComputerPlayer) board.getCurrentPlayer()).selectTarget();
+		board.getCurrentPlayer().newPosition(target);
 		board.revalidate();
 		board.repaint();
 	

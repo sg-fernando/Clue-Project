@@ -66,7 +66,7 @@ public class Player
 	{
 		Board.getInstance().getCell(getRow(), getColumn()).setOccupied(false);
 		setRow(cell.getRow());
-		setColumn(cell.getCol());
+		setColumn(cell.getColumn());
 		cell.setOccupied(true);
 	}
 	

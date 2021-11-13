@@ -22,6 +22,7 @@ public class ClueGame extends JFrame
 	private static ClueGame frame = new ClueGame();
 	
 	private HumanPlayer humanPlayer;
+	private Board board;
 
 	private class Mouse implements MouseListener
 	{
@@ -29,21 +30,23 @@ public class ClueGame extends JFrame
 		@Override
 		public void mouseClicked(MouseEvent e)
 		{
-			if (Boolean.FALSE.equals(Board.getInstance().isUnfinishedTurn()))
+			if (Boolean.FALSE.equals(board.isUnfinishedTurn()))
 			{
 				return;
 			}
 			BoardCell cell;
-			int column = e.getX()/(Board.getInstance().getWidth()/Board.getInstance().getNumColumns());
-			int row = e.getY()/(Board.getInstance().getHeight()/Board.getInstance().getNumRows());
-			cell = new BoardCell(row, column, ' ');
-			System.out.println("CLICK row " + row + " col " + column);
-			if (Boolean.FALSE.equals(Board.getInstance().isTarget(cell)))
+			int column = e.getX()/(board.getWidth()/board.getNumColumns());
+			int row = e.getY()/(board.getHeight()/board.getNumRows());
+			cell = board.getCell(row, column);
+			if (Boolean.FALSE.equals(board.isTarget(cell)))
 			{
 				JOptionPane.showMessageDialog(frame, "That is not a target", "Message", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
 			humanPlayer.newPosition(cell);
+			board.setUnfinished(false);
+			board.revalidate();
+			board.repaint();
 			
 		}
 
@@ -81,7 +84,7 @@ public class ClueGame extends JFrame
 	
 	public void initialize()
 	{
-		Board board = Board.getInstance();
+		board = Board.getInstance();
 		board.setConfigFiles("data/ClueLayout.csv", "data/ClueSetup.txt");
 		board.initialize();
 		board.deal();

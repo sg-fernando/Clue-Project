@@ -42,7 +42,7 @@ public class ComputerAITest
 	public void createSuggestion()
 	{
 		Set<Card> testDeck = board.getDeck();
-		ComputerPlayer testComputer = new ComputerPlayer("Computer", ' ', 20, 2, testDeck);
+		ComputerPlayer testComputer = new ComputerPlayer("Computer", ' ', 2, 20, testDeck);
 		
 		Solution testSuggestion = testComputer.createSuggestion();
 		//test room matches current location
@@ -139,11 +139,12 @@ public class ComputerAITest
 	public void selectTargets()
 	{
 		Set<Card> testDeck = board.getDeck();
-		ComputerPlayer testComputer = new ComputerPlayer("Computer", ' ', 19, 8, testDeck);
+		ComputerPlayer testComputer = new ComputerPlayer("Computer", ' ', 8, 19, testDeck);
 		
 		BoardCell testTarget;
 
 		//test if no rooms in list, select randomly
+		
 		int up = 0;
 		int down = 0;
 		int left = 0;
@@ -151,23 +152,23 @@ public class ComputerAITest
 		int other = 0;
 		int count = 0;
 		board.setRoll(1);
-		while (count < 100)
+		while (count < 1000)
 		{
 			testTarget = testComputer.selectTarget();
-			if (testTarget.getRow() == 7 && testTarget.getCol() == 19)
+			if (testTarget.getRow() == 7 && testTarget.getColumn() == 19)
 			{
 				up++;
 			}
-			else if (testTarget.getRow() == 9 && testTarget.getCol() == 19)
+			else if (testTarget.getRow() == 9 && testTarget.getColumn() == 19)
 			{
 				down++;
 			}
-			else if (testTarget.getRow() == 8 && testTarget.getCol() == 18)
+			else if (testTarget.getRow() == 8 && testTarget.getColumn() == 18)
 			{
 				left++;
 			}
 
-			else if (testTarget.getRow() == 8 && testTarget.getCol() == 20)
+			else if (testTarget.getRow() == 8 && testTarget.getColumn() == 20)
 			{
 				right++;
 			}
@@ -207,20 +208,20 @@ public class ComputerAITest
 		while (count < 100)
 		{
 			testTarget = testComputer.selectTarget();
-			if (testTarget.getRow() == 2 && testTarget.getCol() == 20)
+			if (testTarget.getRow() == 2 && testTarget.getColumn() == 20)
 			{
 				up++;
 			}
-			else if (testTarget.getRow() == 7 && testTarget.getCol() == 18)
+			else if (testTarget.getRow() == 7 && testTarget.getColumn() == 18)
 			{
 				down++;
 			}
-			else if (testTarget.getRow() == 6 && testTarget.getCol() == 17)
+			else if (testTarget.getRow() == 6 && testTarget.getColumn() == 17)
 			{
 				left++;
 			}
 
-			else if (testTarget.getRow() == 6 && testTarget.getCol() == 19)
+			else if (testTarget.getRow() == 6 && testTarget.getColumn() == 19)
 			{
 				right++;
 			}

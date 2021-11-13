@@ -89,7 +89,6 @@ public class ComputerPlayer extends Player
 		BoardCell target = null;
 		BoardCell currentCell = board.getCell(getRow(), getColumn());
 		Set<BoardCell> targets = board.calcTargets(currentCell, board.getRoll());
-		//board.clearTargets();
 		int rand = new Random().nextInt(targets.size());
 		int count = 0;
 		for (BoardCell cell : targets)
@@ -107,7 +106,6 @@ public class ComputerPlayer extends Player
 			}
 			count++;
 		}
-		newPosition(target);
 		return target;
 	}
 	

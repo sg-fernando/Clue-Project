@@ -8,7 +8,7 @@ import java.util.Set;
 public class BoardCell
 {
 	private int row;
-	private int col;
+	private int column;
 	
 	private Boolean isOccupied = false;
 	private Boolean isRoomCenter = false;
@@ -23,10 +23,10 @@ public class BoardCell
 
 	private DoorDirection doorDirection = DoorDirection.NONE;
 	
-	public BoardCell(int row, int col,char initial)
+	public BoardCell(int row, int column,char initial)
 	{
 		this.row = row;
-		this.col = col;
+		this.column = column;
 		this.initial = initial;
 	}
 	
@@ -91,7 +91,7 @@ public class BoardCell
 	
 	public int getRow() { return this.row; }
 	
-	public int getCol() { return this.col; }
+	public int getColumn() { return this.column; }
 	
 	public Set<BoardCell> getAdjList() { return adjList; }
 	public void addAdjacency(BoardCell cell)
@@ -140,6 +140,6 @@ public class BoardCell
 	
 	public Boolean equals(BoardCell other)
 	{
-		return (other.getRow() == this.row && other.getCol() == this.col);
+		return (other.getRow() == this.row && other.getColumn() == this.column);
 	}
 }
