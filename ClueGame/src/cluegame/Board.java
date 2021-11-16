@@ -31,6 +31,7 @@ public class Board extends JPanel
 	private String setupConfigFile;
 	private Map<Character, Room> roomMap;
 	private Set<Card> deck;
+	private Set<Card> tempDeck;
 	private Set<Player> players;
 	
 	private Player currentPlayer;
@@ -128,15 +129,16 @@ public class Board extends JPanel
 	
 	public void deal()
 	{
-		dealSolution();
+		Set<Card> tempDeck = deck;
+		dealSolution(tempDeck);
 		
 		int rand;
 		int count;
 		for (Player player : players)
 		{
 			count = 0;
-			rand = new Random().nextInt(deck.size()-2);
-			for (Card card : new HashSet<Card>(deck))
+			rand = new Random().nextInt(tempDeck.size()-2);
+			for (Card card : new HashSet<Card>(tempDeck))
 			{
 				if (count >= rand && count <= rand + 2)
 				{
@@ -146,12 +148,12 @@ public class Board extends JPanel
 			}
 			for (Card cardHand : player.getHand())
 			{
-				deck.remove(cardHand);
+				tempDeck.remove(cardHand);
 			}
 		}
 	}
 	
-	private void dealSolution()
+	private void dealSolution(Set<Card> d)
 	{
 		int player = 0;
 		int room = 0;
@@ -164,7 +166,7 @@ public class Board extends JPanel
 		Card roomCard = null;
 		Card weaponCard = null;
 	
-		for (Card card : deck)
+		for (Card card : d)
 		{
 			if (card.getType() == CardType.PLAYER)
 			{
@@ -192,9 +194,9 @@ public class Board extends JPanel
 			}
 		}
 		
-		deck.remove(playerCard);
-		deck.remove(roomCard);
-		deck.remove(weaponCard);
+		d.remove(playerCard);
+		d.remove(roomCard);
+		d.remove(weaponCard);
 		
 		solution = new Solution(playerCard, roomCard, weaponCard);
 	}
@@ -407,7 +409,7 @@ public class Board extends JPanel
 					}
 					else
 					{
-						player = new ComputerPlayer(row[1], row[2].charAt(0),rowPos,colPos,deck);
+						player = new ComputerPlayer(row[1], row[2].charAt(0),rowPos,colPos);
 					}
 					players.add(player);
 				}
@@ -417,6 +419,16 @@ public class Board extends JPanel
 					deck.add(card);
 				}
 				
+			}
+			for (Player player : players)
+			{
+				for (Card card : deck)
+				{
+					if (Boolean.FALSE.equals(player.isHuman()))
+					{
+						((ComputerPlayer)player).updateUnseen(card);
+					}
+				}
 			}
 		}
 		catch (IOException e)

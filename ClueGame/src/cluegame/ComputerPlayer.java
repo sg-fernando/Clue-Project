@@ -9,10 +9,9 @@ public class ComputerPlayer extends Player
 	private Set<Card> unseen;
 	private Board board;
 	
-	public ComputerPlayer(String name, char color, int row, int column, Set<Card> unseen)
+	public ComputerPlayer(String name, char color, int row, int column)
 	{
 		super(name, color, false, row, column);
-		this.unseen = unseen;
 		board = Board.getInstance();
 	}
 	
