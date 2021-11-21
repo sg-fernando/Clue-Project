@@ -16,6 +16,8 @@ public class Player
 	private Set<Card> hand;
 	private Set<Card> seen;
 	
+	private Boolean suggest;
+	
 	protected Player(String name, char c, Boolean isHuman, int row, int column)
 	{
 		this.hand = new HashSet<>();
@@ -125,6 +127,12 @@ public class Player
 	public Color getColor() { return color; }
 	public Boolean isHuman() { return isHuman; }
 	
+	public Boolean canSuggest() { return suggest; }
+	public void setSuggest(Boolean suggest)
+	{
+		this.suggest = suggest;
+	}
+	
 	public void setRow(int row)
 	{
 		this.row = row;
@@ -157,5 +165,10 @@ public class Player
 	public Boolean equals(Player other)
 	{
 		return (this.name.equals(other.getName()) && this.color == other.getColor() && this.isHuman == other.isHuman());
+	}
+	
+	public String toString()
+	{
+		return name;
 	}
 }

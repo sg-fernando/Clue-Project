@@ -138,62 +138,62 @@ public class GameCardsPanel extends JPanel
 		}
 	}
 		
-	public static void main(String[] args)
-	{
-		// creating arbitrary player to use for
-		// displaying cards in hand
-		ComputerPlayer cpu = new ComputerPlayer( "Col. Mustard", 'o', 0, 0, null);
-		// cards in hand
-		Card milesCard = new Card("Player","Miles");
-		Card stanCard = new Card("Player","Stan");
-		Card loungeCard = new Card("Room","Lounge");
-		Card lipstickCard = new Card("Weapon","Lipstick");
-		Card bathrobeCard = new Card("Weapon","Bathrobe");
-		Card creamCard = new Card("Weapon","Whipped Cream");
-		Card slipperCard = new Card("Weapon","Feathered Slipper");
-		// seen cards
-		Card dorothyCard = new Card("Player","Dorothy");
-		Card blancheCard = new Card("Player","Blanche");
-		Card roseCard = new Card("Player","Rose");
-		Card garageCard = new Card("Room","Garage");
-		Card yardCard = new Card("Room","Front Yard");
-		Card magnumCard = new Card("Weapon","Magnum Research Micro Desert Eagle");
-		// assembling decks
-		HashSet<Card> hand = new HashSet<>();
-		hand.add(milesCard);
-		hand.add(stanCard);
-		hand.add(loungeCard);
-		hand.add(lipstickCard);
-		hand.add(creamCard);
-		hand.add(bathrobeCard);
-		hand.add(slipperCard);
-		cpu.setHand(hand);
-		
-		HashSet<Card> seen = new HashSet<>();
-		seen.add(dorothyCard);
-		seen.add(blancheCard);
-		seen.add(roseCard);
-		seen.add(garageCard);
-		seen.add(yardCard);
-		seen.add(magnumCard);
-		cpu.setSeen(seen);
-		
-		GameCardsPanel panel = new GameCardsPanel();  // create the panel
-		
-		for (Card card : cpu.getSeen())
-		{
-			panel.updateSeen(card);
-		}
-		for (Card card : cpu.getHand())
-		{
-			panel.updateHand(card);
-		}
-		
-		
-		JFrame frame = new JFrame();  // create the frame 
-		frame.setContentPane(panel); // put the panel in the frame
-		frame.setSize(220, 750);  // size the frame
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // allow it to close
-		frame.setVisible(true); // make it visible
-	}
+//	public static void main(String[] args)
+//	{
+//		// creating arbitrary player to use for
+//		// displaying cards in hand
+//		ComputerPlayer cpu = new ComputerPlayer( "Col. Mustard", 'o', 0, 0);
+//		// cards in hand
+//		Card milesCard = new Card("Player","Miles");
+//		Card stanCard = new Card("Player","Stan");
+//		Card loungeCard = new Card("Room","Lounge");
+//		Card lipstickCard = new Card("Weapon","Lipstick");
+//		Card bathrobeCard = new Card("Weapon","Bathrobe");
+//		Card creamCard = new Card("Weapon","Whipped Cream");
+//		Card slipperCard = new Card("Weapon","Feathered Slipper");
+//		// seen cards
+//		Card dorothyCard = new Card("Player","Dorothy");
+//		Card blancheCard = new Card("Player","Blanche");
+//		Card roseCard = new Card("Player","Rose");
+//		Card garageCard = new Card("Room","Garage");
+//		Card yardCard = new Card("Room","Front Yard");
+//		Card magnumCard = new Card("Weapon","Magnum Research Micro Desert Eagle");
+//		// assembling decks
+//		HashSet<Card> hand = new HashSet<>();
+//		hand.add(milesCard);
+//		hand.add(stanCard);
+//		hand.add(loungeCard);
+//		hand.add(lipstickCard);
+//		hand.add(creamCard);
+//		hand.add(bathrobeCard);
+//		hand.add(slipperCard);
+//		cpu.setHand(hand);
+//		
+//		HashSet<Card> seen = new HashSet<>();
+//		seen.add(dorothyCard);
+//		seen.add(blancheCard);
+//		seen.add(roseCard);
+//		seen.add(garageCard);
+//		seen.add(yardCard);
+//		seen.add(magnumCard);
+//		cpu.setSeen(seen);
+//		
+//		GameCardsPanel panel = new GameCardsPanel();  // create the panel
+//		
+//		for (Card card : cpu.getSeen())
+//		{
+//			panel.updateSeen(card);
+//		}
+//		for (Card card : cpu.getHand())
+//		{
+//			panel.updateHand(card);
+//		}
+//		
+//		
+//		JFrame frame = new JFrame();  // create the frame 
+//		frame.setContentPane(panel); // put the panel in the frame
+//		frame.setSize(220, 750);  // size the frame
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // allow it to close
+//		frame.setVisible(true); // make it visible
+//	}
 }

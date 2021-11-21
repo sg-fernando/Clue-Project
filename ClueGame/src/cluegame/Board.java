@@ -31,7 +31,6 @@ public class Board extends JPanel
 	private String setupConfigFile;
 	private Map<Character, Room> roomMap;
 	private Set<Card> deck;
-	private Set<Card> tempDeck;
 	private Set<Player> players;
 	
 	private Player currentPlayer;
@@ -129,8 +128,8 @@ public class Board extends JPanel
 	
 	public void deal()
 	{
-		Set<Card> tempDeck = deck;
-		dealSolution(tempDeck);
+		Set<Card> tempDeck = new HashSet<>(deck);
+		tempDeck = dealSolution(tempDeck);
 		
 		int rand;
 		int count;
@@ -153,7 +152,7 @@ public class Board extends JPanel
 		}
 	}
 	
-	private void dealSolution(Set<Card> d)
+	private Set<Card> dealSolution(Set<Card> d)
 	{
 		int player = 0;
 		int room = 0;
@@ -199,6 +198,7 @@ public class Board extends JPanel
 		d.remove(weaponCard);
 		
 		solution = new Solution(playerCard, roomCard, weaponCard);
+		return d;
 	}
 	
 	private void buildBoard(List<String[]> list)

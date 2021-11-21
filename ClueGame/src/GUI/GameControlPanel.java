@@ -5,7 +5,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -15,6 +16,8 @@ import javax.swing.border.TitledBorder;
 
 import cluegame.Board;
 import cluegame.BoardCell;
+import cluegame.Card;
+import cluegame.CardType;
 import cluegame.ComputerPlayer;
 import cluegame.Player;
 
@@ -30,6 +33,10 @@ public class GameControlPanel extends JPanel
 	private JButton makeAccusation;
 	
 	private Board board;
+	
+	private JComboBox<String> roomChoice;
+	private JComboBox<String> playerChoice;
+	private JComboBox<String> weaponChoice;
 	
 	public GameControlPanel()
 	{
@@ -83,7 +90,74 @@ public class GameControlPanel extends JPanel
 	
 	private void makeAccusationButton()
 	{
-		JOptionPane.showMessageDialog(ClueGame.getInstance(), "make accusation");
+		if (Boolean.TRUE.equals(board.isUnfinishedTurn()))
+		{
+			JOptionPane jop = new JOptionPane();
+			final JDialog dialog = jop.createDialog(ClueGame.getInstance(), "Make an Accusation");
+			
+			String[] rooms = ClueGame.getNames(CardType.ROOM);
+			String[] players = ClueGame.getNames(CardType.PLAYER);
+			String[] weapons = ClueGame.getNames(CardType.WEAPON);
+			
+			roomChoice = new JComboBox<>(rooms);
+			playerChoice = new JComboBox<>(players);
+			weaponChoice = new JComboBox<>(weapons);
+
+	        JLabel roomsLabel = new JLabel("Room");
+	        JLabel playersLabel = new JLabel("Person");
+	        JLabel weaponsLabel = new JLabel("Weapon");
+	 
+	        JButton submitButton = new JButton("Submit");
+	        submitButton.addActionListener(new ActionListener()
+			{
+		         public void actionPerformed(ActionEvent e)
+		         {
+		        	 Card player = new Card("Player", (String)playerChoice.getSelectedItem());
+		        	 Card room = new Card("Room", (String)roomChoice.getSelectedItem());
+		        	 Card weapon = new Card("Weapon", (String)weaponChoice.getSelectedItem());
+		        	 dialog.dispose();
+		        	 if (board.checkAccusation(player, room, weapon))
+		        	 {
+		        		 ClueGame.win();
+		        	 }
+		        	 else
+		        	 {
+		        		 ClueGame.lose();
+		        	 }
+		         }
+		      });
+
+	        JButton cancelButton = new JButton("Cancel");
+	        cancelButton.addActionListener(new ActionListener()
+			{
+		         public void actionPerformed(ActionEvent e)
+		         {
+		        	 dialog.dispose();
+		         }
+		      });
+	        
+	        JPanel p = new JPanel();
+	        p.setLayout(new GridLayout(4,2));
+	 
+	        p.add(roomsLabel);
+	        p.add(roomChoice);
+	        p.add(playersLabel);
+	        p.add(playerChoice);
+	        p.add(weaponsLabel);
+	        p.add(weaponChoice);
+	        
+	        p.add(submitButton);
+	        p.add(cancelButton);
+	 
+			
+			dialog.setContentPane(p);
+			dialog.setVisible(true);
+
+		}
+		else
+		{
+			JOptionPane.showMessageDialog(ClueGame.getInstance(), "It is not your turn!");
+		}
 	}
 	
 	private JPanel createUpper()

@@ -2,18 +2,28 @@ package GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import cluegame.Board;
 import cluegame.BoardCell;
 import cluegame.Card;
+import cluegame.CardType;
 import cluegame.HumanPlayer;
+import cluegame.Player;
 
 public class ClueGame extends JFrame
 {
@@ -23,6 +33,10 @@ public class ClueGame extends JFrame
 	
 	private HumanPlayer humanPlayer;
 	private Board board;
+	
+	private JLabel roomChoice;
+	JComboBox<String> playerChoice;
+	JComboBox<String> weaponChoice;
 
 	private class Mouse implements MouseListener
 	{
@@ -48,27 +62,81 @@ public class ClueGame extends JFrame
 			board.revalidate();
 			board.repaint();
 			
+			if (!board.getRoom(cell).getName().equals(Board.WALKWAY))
+			{
+				suggestionDialog(board.getRoom(cell).getName());
+			}
+		}
+
+		private void suggestionDialog(String roomName)
+		{
+			JOptionPane jop = new JOptionPane();
+			final JDialog dialog = jop.createDialog(ClueGame.getInstance(), "Make a Suggestion");
+			
+			String[] players = getNames(CardType.PLAYER);
+			String[] weapons = getNames(CardType.WEAPON);
+			
+			roomChoice = new JLabel(roomName);
+			playerChoice = new JComboBox<>(players);
+			weaponChoice = new JComboBox<>(weapons);
+
+	        JLabel roomsLabel = new JLabel("Room");
+	        JLabel playersLabel = new JLabel("Person");
+	        JLabel weaponsLabel = new JLabel("Weapon");
+	 
+	        JButton submitButton = new JButton("Submit");
+	        submitButton.addActionListener(new ActionListener()
+			{
+		         public void actionPerformed(ActionEvent e)
+		         {
+		        	 Card player = new Card("Player", (String)playerChoice.getSelectedItem());
+		        	 Card room = new Card("Room", roomChoice.getText());
+		        	 Card weapon = new Card("Weapon", (String)weaponChoice.getSelectedItem());
+		        	 dialog.dispose();
+		        	 for (Player p : board.getPlayers())
+		        	 {
+		        		 
+		        	 }
+		         }
+		      });
+	        JButton cancelButton = new JButton("Cancel");
+	        cancelButton.addActionListener(new ActionListener()
+	        {
+	        	public void actionPerformed(ActionEvent e)
+		         {
+		        	 dialog.dispose();
+		         }
+		      });
+	        
+	        JPanel p = new JPanel();
+	        p.setLayout(new GridLayout(4,2));
+	 
+	        p.add(roomsLabel);
+	        p.add(roomChoice);
+	        p.add(playersLabel);
+	        p.add(playerChoice);
+	        p.add(weaponsLabel);
+	        p.add(weaponChoice);
+	        
+	        p.add(submitButton);
+	        p.add(cancelButton);
+	 
+			
+			dialog.setContentPane(p);
+			dialog.setVisible(true);
 		}
 
 		@Override
-		public void mousePressed(MouseEvent e) {
-//			System.out.println("mouse pressed");
-		}
+		public void mousePressed(MouseEvent e) {}
 
 		@Override
-		public void mouseReleased(MouseEvent e) {
-//			System.out.println("mouse released");
-		}
+		public void mouseReleased(MouseEvent e) {}
 
 		@Override
-		public void mouseEntered(MouseEvent e) {
-//			System.out.println("mouse entered");
-		}
+		public void mouseEntered(MouseEvent e) {}
 
 		@Override
-		public void mouseExited(MouseEvent e) {
-//			System.out.println("mouse exited");
-		}
+		public void mouseExited(MouseEvent e) {}
 
 	}
 
@@ -113,6 +181,23 @@ public class ClueGame extends JFrame
 		frame.setVisible(true);
 	}
 	
+	public static String[] getNames(CardType type)
+	{
+		String[] names = new String[9];
+		int i = 0;
+		for (Card card : Board.getInstance().getDeck())
+		{
+			if (card.getType() == type)
+			{
+				names[i] = card.getName();
+				i++;
+			}
+		}
+		
+		return names;
+	}
+	
+	
 	public void splashScreen()
 	{
 		JLabel label = new JLabel("<html><center>You are "+ humanPlayer.getName()+"<br>Can you find the solution<br>before the Computer players?");
@@ -120,12 +205,24 @@ public class ClueGame extends JFrame
 		JOptionPane.showMessageDialog(frame, label, "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
+	public static void win()
+	{
+		JOptionPane.showMessageDialog(ClueGame.getInstance(), "You win!", "Message", JOptionPane.DEFAULT_OPTION);
+		frame.dispose();
+	}
+	public static void lose()
+	{
+		JOptionPane.showMessageDialog(ClueGame.getInstance(), "Sorry, not correct. You lose.", "Message", JOptionPane.DEFAULT_OPTION);
+		frame.dispose();
+	}
+
 	public static void main(String[] args)
 	{
 		ClueGame frame = ClueGame.getInstance();
 		frame.initialize();
 		frame.splashScreen();
 	}
+
 
 
 }
