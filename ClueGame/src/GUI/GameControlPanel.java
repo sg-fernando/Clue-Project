@@ -72,6 +72,10 @@ public class GameControlPanel extends JPanel
 	
 	private void humanTurn()
 	{
+		if (board.getCurrentPlayer().canSuggest())
+		{
+			
+		}
 		board.setUnfinished(true);
 		BoardCell cell = board.getCell(board.getHuman().getRow(), board.getHuman().getColumn());
 		board.calcTargets(cell, board.getRoll());
@@ -81,6 +85,10 @@ public class GameControlPanel extends JPanel
 	
 	private void computerTurn()
 	{
+		if (board.getCurrentPlayer().canSuggest())
+		{
+			
+		}
 		BoardCell target = ((ComputerPlayer) board.getCurrentPlayer()).selectTarget();
 		board.getCurrentPlayer().newPosition(target);
 		board.revalidate();

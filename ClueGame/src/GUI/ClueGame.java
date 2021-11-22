@@ -24,6 +24,7 @@ import cluegame.Card;
 import cluegame.CardType;
 import cluegame.HumanPlayer;
 import cluegame.Player;
+import cluegame.Solution;
 
 public class ClueGame extends JFrame
 {
@@ -68,64 +69,6 @@ public class ClueGame extends JFrame
 			}
 		}
 
-		private void suggestionDialog(String roomName)
-		{
-			JOptionPane jop = new JOptionPane();
-			final JDialog dialog = jop.createDialog(ClueGame.getInstance(), "Make a Suggestion");
-			
-			String[] players = getNames(CardType.PLAYER);
-			String[] weapons = getNames(CardType.WEAPON);
-			
-			roomChoice = new JLabel(roomName);
-			playerChoice = new JComboBox<>(players);
-			weaponChoice = new JComboBox<>(weapons);
-
-	        JLabel roomsLabel = new JLabel("Room");
-	        JLabel playersLabel = new JLabel("Person");
-	        JLabel weaponsLabel = new JLabel("Weapon");
-	 
-	        JButton submitButton = new JButton("Submit");
-	        submitButton.addActionListener(new ActionListener()
-			{
-		         public void actionPerformed(ActionEvent e)
-		         {
-		        	 Card player = new Card("Player", (String)playerChoice.getSelectedItem());
-		        	 Card room = new Card("Room", roomChoice.getText());
-		        	 Card weapon = new Card("Weapon", (String)weaponChoice.getSelectedItem());
-		        	 dialog.dispose();
-		        	 for (Player p : board.getPlayers())
-		        	 {
-		        		 
-		        	 }
-		         }
-		      });
-	        JButton cancelButton = new JButton("Cancel");
-	        cancelButton.addActionListener(new ActionListener()
-	        {
-	        	public void actionPerformed(ActionEvent e)
-		         {
-		        	 dialog.dispose();
-		         }
-		      });
-	        
-	        JPanel p = new JPanel();
-	        p.setLayout(new GridLayout(4,2));
-	 
-	        p.add(roomsLabel);
-	        p.add(roomChoice);
-	        p.add(playersLabel);
-	        p.add(playerChoice);
-	        p.add(weaponsLabel);
-	        p.add(weaponChoice);
-	        
-	        p.add(submitButton);
-	        p.add(cancelButton);
-	 
-			
-			dialog.setContentPane(p);
-			dialog.setVisible(true);
-		}
-
 		@Override
 		public void mousePressed(MouseEvent e) {}
 
@@ -138,6 +81,62 @@ public class ClueGame extends JFrame
 		@Override
 		public void mouseExited(MouseEvent e) {}
 
+	}
+	
+	public void suggestionDialog(String roomName)
+	{
+		JOptionPane jop = new JOptionPane();
+		final JDialog dialog = jop.createDialog(ClueGame.getInstance(), "Make a Suggestion");
+		
+		String[] players = getNames(CardType.PLAYER);
+		String[] weapons = getNames(CardType.WEAPON);
+		
+		roomChoice = new JLabel(roomName);
+		playerChoice = new JComboBox<>(players);
+		weaponChoice = new JComboBox<>(weapons);
+
+        JLabel roomsLabel = new JLabel("Room");
+        JLabel playersLabel = new JLabel("Person");
+        JLabel weaponsLabel = new JLabel("Weapon");
+ 
+        JButton submitButton = new JButton("Submit");
+        submitButton.addActionListener(new ActionListener()
+		{
+	         public void actionPerformed(ActionEvent e)
+	         {
+	        	 Card player = new Card("Player", (String)playerChoice.getSelectedItem());
+	        	 Card room = new Card("Room", roomChoice.getText());
+	        	 Card weapon = new Card("Weapon", (String)weaponChoice.getSelectedItem());
+	        	 dialog.dispose();
+	        	 Solution suggestion = new Solution(player, room, weapon);
+	        	 board.handleSuggestion(suggestion, humanPlayer);
+	         }
+	      });
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(new ActionListener()
+        {
+        	public void actionPerformed(ActionEvent e)
+	         {
+	        	 dialog.dispose();
+	         }
+	      });
+        
+        JPanel p = new JPanel();
+        p.setLayout(new GridLayout(4,2));
+ 
+        p.add(roomsLabel);
+        p.add(roomChoice);
+        p.add(playersLabel);
+        p.add(playerChoice);
+        p.add(weaponsLabel);
+        p.add(weaponChoice);
+        
+        p.add(submitButton);
+        p.add(cancelButton);
+ 
+		
+		dialog.setContentPane(p);
+		dialog.setVisible(true);
 	}
 
 	private ClueGame()

@@ -141,8 +141,15 @@ public class Player
 	{
 		this.column = column;
 	}
-	
 
+	public int getRow() {
+		return row;
+	}
+	
+	public int getColumn() {
+		return column;
+	}
+	
 	//testing methods
 	public void setHand(Set<Card> hand)
 	{
@@ -154,18 +161,16 @@ public class Player
 		this.seen = seen;
 	}
 
-	public int getRow() {
-		return row;
-	}
-
-	public int getColumn() {
-		return column;
-	}
-	
 	public Boolean equals(Player other)
 	{
 		return (this.name.equals(other.getName()) && this.color == other.getColor() && this.isHuman == other.isHuman());
 	}
+	
+	public Boolean equals(Card other)
+	{
+		return (this.name.equals(other.getName()) && other.getType() == CardType.PLAYER);
+	}
+
 	
 	public String toString()
 	{

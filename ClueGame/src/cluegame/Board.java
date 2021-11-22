@@ -111,14 +111,20 @@ public class Board extends JPanel
 
 	public Card handleSuggestion(Solution suggestion, Player player)
 	{
+		Card r = null;
 		for (Player p : players)
 		{
 			if (p.disproveSuggestion(suggestion) != null && (player != p))
 			{
-				return p.disproveSuggestion(suggestion);
+				r = p.disproveSuggestion(suggestion);
+			}
+			if (Boolean.TRUE.equals(p.equals(suggestion.getPerson())))
+			{
+				p.newPosition(getCell(player.getRow(),player.getColumn()));
+				p.setSuggest(true);
 			}
 		}
-		return null;
+		return r;
 	}
 	
 	public boolean checkAccusation(Card player, Card room, Card weapon)
