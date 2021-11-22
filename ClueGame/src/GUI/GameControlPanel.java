@@ -20,6 +20,7 @@ import cluegame.Card;
 import cluegame.CardType;
 import cluegame.ComputerPlayer;
 import cluegame.Player;
+import cluegame.Solution;
 
 public class GameControlPanel extends JPanel
 {
@@ -56,6 +57,8 @@ public class GameControlPanel extends JPanel
 		}
 		else
 		{
+			setGuess("", new ComputerPlayer("", 'x', 0, 0));
+			setGuessResult("", new ComputerPlayer("", 'x', 0, 0));
 			board.updateCurrentPlayer();
 			board.roll();
 			setTurn(board.getCurrentPlayer(), board.getRoll());
@@ -72,28 +75,57 @@ public class GameControlPanel extends JPanel
 	
 	private void humanTurn()
 	{
-		if (board.getCurrentPlayer().canSuggest())
-		{
-			
-		}
 		board.setUnfinished(true);
-		BoardCell cell = board.getCell(board.getHuman().getRow(), board.getHuman().getColumn());
-		board.calcTargets(cell, board.getRoll());
-		board.revalidate();
-		board.repaint();
+		if (Boolean.TRUE.equals(board.getCurrentPlayer().canSuggest()))
+		{
+			board.getCurrentPlayer().setSuggest(false);
+			ClueGame.getInstance().suggestionDialog(board.getRoom(board.getCell(board.getCurrentPlayer().getRow(), board.getCurrentPlayer().getColumn())).getName());
+		}
+		if (Boolean.TRUE.equals(board.isUnfinishedTurn()))
+		{
+			BoardCell cell = board.getCell(board.getHuman().getRow(), board.getHuman().getColumn());
+			board.calcTargets(cell, board.getRoll());
+			board.revalidate();
+			board.repaint();
+		}
 	}
 	
 	private void computerTurn()
 	{
-		if (board.getCurrentPlayer().canSuggest())
+		Solution accusation = ((ComputerPlayer)board.getCurrentPlayer()).getAccusation();
+		if (accusation != null && Boolean.TRUE.equals(board.checkAccusation(accusation)))
 		{
-			
+			ClueGame.lose();
 		}
-		BoardCell target = ((ComputerPlayer) board.getCurrentPlayer()).selectTarget();
-		board.getCurrentPlayer().newPosition(target);
+		else if (Boolean.TRUE.equals(board.getCurrentPlayer().canSuggest()))
+		{
+			board.getCurrentPlayer().setSuggest(false);
+			computerSuggest();
+		}
+		else
+		{
+			BoardCell target = ((ComputerPlayer) board.getCurrentPlayer()).selectTarget();
+		
+			board.getCurrentPlayer().newPosition(target);
+			if (!board.getRoom(target).getName().equals(Board.WALKWAY))
+			{
+				computerSuggest();
+			}
+		}
+	}
+	private void computerSuggest()
+	{
+		Solution suggestion = ((ComputerPlayer)board.getCurrentPlayer()).createSuggestion();
+		setGuess(suggestion.getPerson().getName()+ ", "+suggestion.getRoom().getName()+", "+suggestion.getWeapon().getName(),board.getCurrentPlayer());
+		Card r = board.handleSuggestion(suggestion, board.getCurrentPlayer());
+		if (r != null)
+		{
+			((ComputerPlayer)board.getCurrentPlayer()).removeUnseen(r);
+			board.getCurrentPlayer().updateSeen(r);
+			setGuessResult("Suggestion disproven!",board.getDisprovenPlayer());
+		}
 		board.revalidate();
 		board.repaint();
-	
 	}
 	
 	private void makeAccusationButton()
@@ -124,7 +156,7 @@ public class GameControlPanel extends JPanel
 		        	 Card room = new Card("Room", (String)roomChoice.getSelectedItem());
 		        	 Card weapon = new Card("Weapon", (String)weaponChoice.getSelectedItem());
 		        	 dialog.dispose();
-		        	 if (board.checkAccusation(player, room, weapon))
+		        	 if (Boolean.TRUE.equals(board.checkAccusation(player, room, weapon)))
 		        	 {
 		        		 ClueGame.win();
 		        	 }
@@ -160,7 +192,6 @@ public class GameControlPanel extends JPanel
 			
 			dialog.setContentPane(p);
 			dialog.setVisible(true);
-
 		}
 		else
 		{
@@ -245,14 +276,16 @@ public class GameControlPanel extends JPanel
 		rollText.setText(Integer.toString(roll));
 	}
 	
-	private void setGuess(String string)
+	public void setGuess(String string, Player player)
 	{
 		guessText.setText(string);
+		guessText.setBackground(player.getColor());
 	}
 	
-	private void setGuessResult(String string)
+	public void setGuessResult(String string, Player player)
 	{
 		guessResultText.setText(string);
+		guessResultText.setBackground(player.getColor());
 	}
 	
 //	public static void main(String[] args)

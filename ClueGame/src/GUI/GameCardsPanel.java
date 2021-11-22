@@ -1,16 +1,14 @@
 package GUI;
 
 import java.awt.GridLayout;
-import java.util.HashSet;
-
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+import cluegame.Board;
 import cluegame.Card;
-import cluegame.ComputerPlayer;
+import cluegame.Player;
 
 public class GameCardsPanel extends JPanel
 {
@@ -116,11 +114,12 @@ public class GameCardsPanel extends JPanel
 		}
 	}
 	
-	public void updateSeen(Card card)
+	public void updateSeen(Card card, Player player)
 	{
 		JTextField text = new JTextField(15);
 		text.setEditable(false);
 		text.setText(card.getName());
+		text.setBackground(player.getColor());
 		
 		switch (card.getType())
 		{

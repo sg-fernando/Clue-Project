@@ -33,6 +33,7 @@ public class Board extends JPanel
 	private Set<Card> deck;
 	private Set<Player> players;
 	
+	private Player disproven;
 	private Player currentPlayer;
 	
 	private Boolean unfinished = false;
@@ -112,11 +113,13 @@ public class Board extends JPanel
 	public Card handleSuggestion(Solution suggestion, Player player)
 	{
 		Card r = null;
+		
 		for (Player p : players)
 		{
 			if (p.disproveSuggestion(suggestion) != null && (player != p))
 			{
 				r = p.disproveSuggestion(suggestion);
+				disproven = p;
 			}
 			if (Boolean.TRUE.equals(p.equals(suggestion.getPerson())))
 			{
@@ -127,7 +130,12 @@ public class Board extends JPanel
 		return r;
 	}
 	
-	public boolean checkAccusation(Card player, Card room, Card weapon)
+	public Player getDisprovenPlayer()
+	{
+		return disproven;
+	}
+	
+	public Boolean checkAccusation(Card player, Card room, Card weapon)
 	{
 		return solution.getPerson().equals(player) && solution.getRoom().equals(room) && solution.getWeapon().equals(weapon);
 	}
@@ -147,7 +155,14 @@ public class Board extends JPanel
 			{
 				if (count >= rand && count <= rand + 2)
 				{
-					player.updateHand(card);
+					if (Boolean.TRUE.equals(player.isHuman()))
+					{
+						player.updateHand(card);
+					}
+					else
+					{
+						((ComputerPlayer)player).updateHand(card);
+					}
 				}
 				count++;
 			}
@@ -199,6 +214,9 @@ public class Board extends JPanel
 			}
 		}
 		
+		System.out.println(playerCard.getName());
+		System.out.println(roomCard.getName());
+		System.out.println(weaponCard.getName());
 		d.remove(playerCard);
 		d.remove(roomCard);
 		d.remove(weaponCard);
@@ -564,7 +582,7 @@ public class Board extends JPanel
 		this.players = p;
 	}
 	
-	public boolean checkAccusation(Solution S) {
+	public Boolean checkAccusation(Solution S) {
 		return this.getSolution().equals(S);
 	}
 

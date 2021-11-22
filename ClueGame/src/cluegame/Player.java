@@ -41,7 +41,7 @@ public class Player
 			color = Color.WHITE;
 			break;
 		case 'b':
-			color = Color.BLUE;
+			color = Color.BLUE.brighter();
 			break;
 		case 'y':
 			color = Color.YELLOW;
@@ -50,11 +50,11 @@ public class Player
 			color = Color.ORANGE;
 			break;
 		default:
-			color = Color.BLACK;
+			color = Color.GRAY.brighter();
 			break;
 		}
 	}
-	
+
 	public void draw(int width, int height, Graphics g)
 	{
 		int y = height * row;
@@ -70,6 +70,8 @@ public class Player
 		setRow(cell.getRow());
 		setColumn(cell.getColumn());
 		cell.setOccupied(true);
+		Board.getInstance().revalidate();
+		Board.getInstance().repaint();
 	}
 	
 	public Card disproveSuggestion(Solution suggestion)

@@ -29,17 +29,17 @@ public class ComputerPlayer extends Player
 	{
 		unseen.add(card);
 	}
-	
+
 	public void removeUnseen(Card card)
 	{
 		unseen.remove(card);
 	}
 	
 	
-	private int countType(CardType type)
+	private int countType(Set<Card> set, CardType type)
 	{
 		int count = 0;
-		for (Card card : unseen)
+		for (Card card : set)
 		{
 			if (card.getType() == type)
 			{
@@ -53,13 +53,14 @@ public class ComputerPlayer extends Player
 	{
 		int player = 0;
 		int weapon = 0;
-		int randP = new Random().nextInt(countType(CardType.PLAYER));
-		int randW = new Random().nextInt(countType(CardType.WEAPON));
+		int randP = new Random().nextInt(countType(unseen, CardType.PLAYER));
+		int randW = new Random().nextInt(countType(unseen, CardType.WEAPON));
 		
 		Card playerCard = null;
 		Card roomCard = null;
 		Card weaponCard = null;
 		String room = board.getRoom(board.getCell(getRow(), getColumn())).getName();
+		roomCard = new Card("Room", room);
 	
 		for (Card card : unseen)
 		{
@@ -79,22 +80,50 @@ public class ComputerPlayer extends Player
 				}
 				weapon++;
 			}
-			else if (card.getName().equals(room))
-			{
-				roomCard = card;
-			}
 		}
 		
-		
-		Solution solution = new Solution(playerCard, roomCard, weaponCard);
-		
-		return solution;
+		return new Solution(playerCard, roomCard, weaponCard);
 	}
+	
+	public Solution getAccusation()
+	{
+		Solution accusation = null;
+		Card player = null;
+		Card room = null;
+		Card weapon = null;
+		if (unseen.size() == 3)
+		{
+			for (Card c : unseen)
+			{
+				if (c.getType() == CardType.PLAYER)
+				{
+					player = c;
+				}
+				else if (c.getType() == CardType.ROOM)
+				{
+					room = c;
+				}
+				else
+				{
+					weapon = c;
+				}
+			}
+		}
+		accusation = new Solution(player, room, weapon);
+		
+		return accusation;
+	}
+	
+	
 	public BoardCell selectTarget()
 	{
 		BoardCell target = null;
 		BoardCell currentCell = board.getCell(getRow(), getColumn());
 		Set<BoardCell> targets = board.calcTargets(currentCell, board.getRoll());
+		if (targets.size() < 1)
+		{
+			return board.getCell(getRow(), getColumn());
+		}
 		int rand = new Random().nextInt(targets.size());
 		int count = 0;
 		for (BoardCell cell : targets)

@@ -23,7 +23,6 @@ import cluegame.BoardCell;
 import cluegame.Card;
 import cluegame.CardType;
 import cluegame.HumanPlayer;
-import cluegame.Player;
 import cluegame.Solution;
 
 public class ClueGame extends JFrame
@@ -34,6 +33,9 @@ public class ClueGame extends JFrame
 	
 	private HumanPlayer humanPlayer;
 	private Board board;
+	
+	private GameCardsPanel cardsPanel;
+	private GameControlPanel controlPanel;
 	
 	private JLabel roomChoice;
 	JComboBox<String> playerChoice;
@@ -60,9 +62,6 @@ public class ClueGame extends JFrame
 			}
 			humanPlayer.newPosition(cell);
 			board.setUnfinished(false);
-			board.revalidate();
-			board.repaint();
-			
 			if (!board.getRoom(cell).getName().equals(Board.WALKWAY))
 			{
 				suggestionDialog(board.getRoom(cell).getName());
@@ -109,16 +108,25 @@ public class ClueGame extends JFrame
 	        	 Card weapon = new Card("Weapon", (String)weaponChoice.getSelectedItem());
 	        	 dialog.dispose();
 	        	 Solution suggestion = new Solution(player, room, weapon);
-	        	 board.handleSuggestion(suggestion, humanPlayer);
+	        	 Card r = board.handleSuggestion(suggestion, humanPlayer);
+	        	 controlPanel.setGuess(suggestion.getPerson().getName()+ ", "+suggestion.getRoom().getName()+", "+suggestion.getWeapon().getName(),board.getCurrentPlayer());
+	        	 if (r != null)
+	     		{
+	     			board.getCurrentPlayer().updateSeen(r);
+	     			cardsPanel.updateSeen(r,board.getDisprovenPlayer());
+	     			controlPanel.setGuessResult(r.getName(),board.getDisprovenPlayer());
+	     		}
+	        	 board.setUnfinished(false);
 	         }
 	      });
         JButton cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(new ActionListener()
         {
         	public void actionPerformed(ActionEvent e)
-	         {
-	        	 dialog.dispose();
-	         }
+        	{
+        		board.setUnfinished(true);
+        		dialog.dispose();
+        	}
 	      });
         
         JPanel p = new JPanel();
@@ -163,14 +171,14 @@ public class ClueGame extends JFrame
 		frame.setTitle("Clue Game");
 		frame.setSize(1000, 900);
 		
-		GameCardsPanel cardsPanel = new GameCardsPanel();
+		cardsPanel = new GameCardsPanel();
 		cardsPanel.setPreferredSize(new Dimension(frame.getWidth()/5,0));
 		for (Card card : humanPlayer.getHand())
 		{
 			cardsPanel.updateHand(card);
 		}
 		
-		GameControlPanel controlPanel = new GameControlPanel();
+		controlPanel = new GameControlPanel();
 		controlPanel.setPreferredSize(new Dimension(0, frame.getHeight()/7));
 		
 		frame.add(board, BorderLayout.CENTER);

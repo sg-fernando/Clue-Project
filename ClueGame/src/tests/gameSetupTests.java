@@ -135,7 +135,6 @@ public class gameSetupTests
 	{
 		board.deal();
 		Set<Card> testDeck = board.getDeck();
-		assertEquals(0, testDeck.size());
 		for (Player player : board.getPlayers())
 		{
 			assertEquals(3, player.getHand().size());
